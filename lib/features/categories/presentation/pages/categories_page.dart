@@ -20,10 +20,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
   @override
   void initState() {
     super.initState();
-    _loadUserIdAndDispatch();
-  }
-
-  void _loadUserIdAndDispatch() {
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
       context.read<CategoryListBloc>().add(
@@ -109,7 +105,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
             RouteNames.createCategoryPage,
           );
           if (result == true) {
-            _loadUserIdAndDispatch();
+            final currentUser = FirebaseAuth.instance.currentUser;
+            if (currentUser != null) {
+              context.read<CategoryListBloc>().add(
+                CategoryListEvent(userId: currentUser.uid),
+              );
+            }
           }
         },
         backgroundColor: AppColors.primaryColor,

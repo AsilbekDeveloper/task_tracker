@@ -4,4 +4,5 @@ abstract class AppImages {
   static const String profileLogo = "assets/icons/profile_logo.png";
   static const String checklist = "assets/icons/checklist.png";
   static const String profileImage = "assets/icons/profile_image.png";
+  static const String appLogo = "assets/icons/app_logo.png";
 }

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:task_tracker_app/components/main_button.dart';
 import 'package:task_tracker_app/components/social_button_widget.dart';
 import 'package:task_tracker_app/components/text_field_widget.dart';
@@ -23,7 +25,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool isButtonEnabled = true;
+  bool buttonState = true;
 
   @override
   void initState() {
@@ -37,7 +39,7 @@ class _SignInPageState extends State<SignInPage> {
     final password = passwordController.text.trim();
 
     setState(() {
-      isButtonEnabled = email.isNotEmpty && password.isNotEmpty;
+      buttonState = email.isNotEmpty && password.isNotEmpty;
     });
   }
 
@@ -53,15 +55,23 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     ResponsiveHelper.init(context);
     return BlocConsumer<SignInBloc, SignInState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is SignInSuccess) {
-          Navigator.pushNamed(context, RouteNames.bottomNavbar);
-        } else if (state is SignInError) {
-          ScaffoldMessenger.of(
+          final box = await Hive.openBox('userBox');
+          await box.put('uid', FirebaseAuth.instance.currentUser?.uid);
+
+          Navigator.pushNamedAndRemoveUntil(
             context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+            RouteNames.bottomNavbar,
+                (route) => false,
+          );
+        } else if (state is SignInError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
         }
       },
+
       builder: (context, state) {
         return SafeArea(
           child: Scaffold(
@@ -121,7 +131,7 @@ class _SignInPageState extends State<SignInPage> {
                                 SignInEvent(email: email, password: password),
                               );
                             },
-                            isDisabled: isButtonEnabled,
+                            isDisabled: !buttonState,
                           ),
                           SizedBox(height: ResponsiveHelper.hPixel(31)),
                           Row(

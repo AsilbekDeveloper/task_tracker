@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      initialRoute: RouteNames.signInPage,
+      initialRoute: RouteNames.splashPage,
       onGenerateRoute: AppRoute(context: context).onGenerateRoute,
     );
   }

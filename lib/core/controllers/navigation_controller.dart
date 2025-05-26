@@ -27,24 +27,15 @@ class _NavigationControllerState extends State<NavigationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true, // ✅ Important: Allows FAB to "float" on bottom bar correctly
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, RouteNames.addTaskPage);
-        },
-        backgroundColor: AppColors.primaryColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-        child: Icon(Icons.add, color: AppColors.whiteColor),
-      ),
+      extendBody: true,
+      floatingActionButton: _buildFABForPage(_selectedIndex),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
       body: IndexedStack(index: _selectedIndex, children: _pages),
-
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         notchMargin: 6,
         color: AppColors.secondBgColor,
-        clipBehavior: Clip.antiAlias, // Helps smooth the notch area
+        clipBehavior: Clip.antiAlias,
         child: SizedBox(
           height: 60,
           child: Row(
@@ -64,7 +55,7 @@ class _NavigationControllerState extends State<NavigationController> {
                     : IconsaxPlusLinear.calendar,
                 label: "Calendar",
               ),
-              const SizedBox(width: 40), // Space for FAB
+              const SizedBox(width: 40),
               _buildNavItem(
                 index: 2,
                 icon: _selectedIndex == 2
@@ -84,6 +75,31 @@ class _NavigationControllerState extends State<NavigationController> {
         ),
       ),
     );
+  }
+
+  Widget? _buildFABForPage(int index) {
+    switch (index) {
+      case 0: // HomePage
+        return FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, RouteNames.addTaskPage);
+          },
+          backgroundColor: AppColors.primaryColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          child: Icon(Icons.add, color: AppColors.whiteColor),
+        );
+      case 2: // CategoriesPage
+        return FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, RouteNames.createCategoryPage);
+          },
+          backgroundColor: AppColors.primaryColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          child: Icon(Icons.category, color: AppColors.whiteColor),
+        );
+      default:
+        return null;
+    }
   }
 
   Widget _buildNavItem({

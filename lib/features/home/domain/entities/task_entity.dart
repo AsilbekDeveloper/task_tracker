@@ -20,4 +20,28 @@ class TaskEntity {
     required this.endTime,
     required this.userId,
   });
+
+  TaskEntity copyWith({
+    String? taskId,
+    String? title,
+    String? description,
+    String? categoryId,
+    bool? isCompleted,
+    int? priority,
+    DateTime? dateTime,
+    DateTime? endTime,
+    String? userId,
+  }) {
+    return TaskEntity(
+      taskId: taskId ?? this.taskId,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      categoryId: categoryId ?? this.categoryId,
+      isCompleted: isCompleted ?? this.isCompleted,
+      priority: priority ?? this.priority,
+      dateTime: dateTime ?? this.dateTime,
+      endTime: endTime ?? this.endTime,
+      userId: userId ?? this.userId,
+    );
+  }
 }

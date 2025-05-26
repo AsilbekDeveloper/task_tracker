@@ -5,6 +5,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:task_tracker_app/core/app_images_icons/app_images.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
+import 'package:task_tracker_app/core/routes/route_names.dart';
 import 'package:task_tracker_app/core/strings/app_string.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 import 'package:task_tracker_app/features/categories/domain/entities/category_entity.dart';
@@ -38,7 +39,6 @@ class _HomePageState extends State<HomePage> {
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -90,26 +90,35 @@ class _HomePageState extends State<HomePage> {
                           );
 
                           if (taskList.isEmpty) {
-                            return Center(child: Column(
-                              children: [
-                                Image.asset(AppImages.checklist),
-                                SizedBox(height: ResponsiveHelper.hPixel(10),),
-                                Text(AppString.whatWant, style: AppTextStyles.normal20,),
-                                SizedBox(height: ResponsiveHelper.hPixel(10)),
-                                Text(AppString.addTasks, style: AppTextStyles.normal16,)
-                              ],
-                            ));
+                            return Center(
+                              child: Column(
+                                children: [
+                                  Image.asset(AppImages.checklist),
+                                  SizedBox(height: ResponsiveHelper.hPixel(10)),
+                                  Text(
+                                    AppString.whatWant,
+                                    style: AppTextStyles.normal20,
+                                  ),
+                                  SizedBox(height: ResponsiveHelper.hPixel(10)),
+                                  Text(
+                                    AppString.addTasks,
+                                    style: AppTextStyles.normal16,
+                                  ),
+                                ],
+                              ),
+                            );
                           }
                           return ListView.separated(
                             itemCount: taskList.length,
-                            separatorBuilder: (context, index) => SizedBox(height: 16),
+                            separatorBuilder:
+                                (context, index) => SizedBox(height: 16),
                             itemBuilder: (context, index) {
                               final task = taskList[index];
 
                               CategoryEntity? category;
                               try {
                                 category = categoryList.categories.firstWhere(
-                                      (cat) => cat.categoryId == task.categoryId,
+                                  (cat) => cat.categoryId == task.categoryId,
                                 );
                               } catch (e) {
                                 category = null;
@@ -129,6 +138,16 @@ class _HomePageState extends State<HomePage> {
                                 priority: task.priority.toString(),
                                 value: task.isCompleted,
                                 onChanged: (val) {},
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    RouteNames.singleTaskPage,
+                                    arguments: {
+                                      'task': task,
+                                      'category': category,
+                                    },
+                                  );
+                                },
                               );
                             },
                           );

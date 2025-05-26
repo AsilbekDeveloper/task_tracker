@@ -18,27 +18,27 @@ class MainButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ResponsiveHelper.init(context);
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ButtonStyle(
-        fixedSize: WidgetStateProperty.all(
-          Size(double.infinity, ResponsiveHelper.hPixel(48)),
+    return SizedBox(
+      width: double.infinity,
+      height: ResponsiveHelper.hPixel(48),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ButtonStyle(
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+          ),
+          backgroundColor: WidgetStateProperty.all(
+            isDisabled ? AppColors.buttonDefault : AppColors.primaryColor,
+          ),
         ),
-        shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        child: Text(
+          text,
+          style: isDisabled
+              ? AppTextStyles.textButtonDisabled
+              : AppTextStyles.textButtonDisabled.copyWith(
+            color: AppColors.whiteColor,
+          ),
         ),
-        backgroundColor: WidgetStateProperty.all(
-          isDisabled ? AppColors.buttonDefault : AppColors.primaryColor,
-        ),
-      ),
-      child: Text(
-        text,
-        style:
-            isDisabled
-                ? AppTextStyles.textButtonDisabled
-                : AppTextStyles.textButtonDisabled.copyWith(
-                  color: AppColors.whiteColor,
-                ),
       ),
     );
   }

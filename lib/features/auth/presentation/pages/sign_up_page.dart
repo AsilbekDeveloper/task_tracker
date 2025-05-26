@@ -24,13 +24,14 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
-  bool isButtonEnabled = true;
+  bool buttonState = true;
 
   @override
   void initState() {
     super.initState();
     emailController.addListener(_checkForm);
     passwordController.addListener(_checkForm);
+    confirmPasswordController.addListener(_checkForm);
   }
 
   void _checkForm() {
@@ -39,7 +40,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final confirmPassword = confirmPasswordController.text.trim();
 
     setState(() {
-      isButtonEnabled = email.isNotEmpty && password.isNotEmpty && confirmPassword.isNotEmpty;
+      buttonState = email.isNotEmpty && password.isNotEmpty && confirmPassword.isNotEmpty;
     });
   }
 
@@ -128,7 +129,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     }
                     context.read<SignUpBloc>().add(SignUpEvent(email: email, password: password),);
                   },
-                  isDisabled: isButtonEnabled,
+                  isDisabled: !buttonState,
                 ),
                 SizedBox(height: ResponsiveHelper.hPixel(18)),
                 Row(

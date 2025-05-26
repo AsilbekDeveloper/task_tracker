@@ -31,25 +31,25 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
         throw Exception("UserId cannot be empty");
       }
 
-      logger.i("📥 Fetching categories for userId: $userId");
+      logger.i("Fetching categories for userId: $userId");
 
       final snapshot = await firebaseFirestore
           .collection("categories")
           .where("userId", isEqualTo: userId)
           .get();
 
-      logger.i("📦 Snapshot retrieved: ${snapshot.docs.length} documents");
+      logger.i("Snapshot retrieved: ${snapshot.docs.length} documents");
 
       final categories = snapshot.docs.map((doc) {
         final data = doc.data();
         return CategoryModel.fromJson(data, doc.id);
       }).toList();
 
-      logger.i("✅ Categories fetched successfully: ${categories.length}");
+      logger.i("Categories fetched successfully: ${categories.length}");
 
       return CategoryListModel(categories: categories);
     } catch (e) {
-      logger.e("❌ Error fetching categories: $e");
+      logger.e("Error fetching categories: $e");
       throw Exception('Kategoriya roʻyxatini olishda xatolik: $e');
     }
   }
@@ -71,7 +71,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
         "color": color,
       });
 
-      logger.i("✅ Category created: $categoryName");
+      logger.i("Category created: $categoryName");
 
       return CategoryModel(
         categoryId: docRef.id,
@@ -82,7 +82,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
         color: color,
       );
     } catch (e) {
-      logger.e("❌ Error creating category: $e");
+      logger.e("Error creating category: $e");
       throw Exception("Kategoriya yaratishda xatolik: $e");
     }
   }
@@ -98,11 +98,10 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
           .get();
 
       if (snapshot.docs.isNotEmpty) {
-        logger.i("ℹ️ Default categories already exist for user: $userId");
+        logger.i("Default categories already exist for user: $userId");
         return;
       }
-
-      logger.i("➕ Creating default categories for user: $userId");
+      logger.i("Creating default categories for user: $userId");
 
       final defaultCategories = [
         {
@@ -135,9 +134,9 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
         });
       }
 
-      logger.i("✅ Default categories created for user: $userId");
+      logger.i("Default categories created for user: $userId");
     } catch (e) {
-      logger.e("❌ Error adding default categories: $e");
+      logger.e("Error adding default categories: $e");
       throw Exception("Default kategoriyalarni qoʻshishda xatolik: $e");
     }
   }

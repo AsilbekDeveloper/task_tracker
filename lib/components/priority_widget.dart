@@ -57,10 +57,17 @@ class _PriorityWidgetState extends State<PriorityWidget> {
             ),
             const SizedBox(height: 10),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryColor,
+                alignment: Alignment.center,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                minimumSize: Size(double.infinity, ResponsiveHelper.hPixel(48)),
+                foregroundColor: AppColors.whiteColor
+              ),
               onPressed: () {
                 Navigator.pop(context, selectedPriority);
               },
-              child: const Text("Tanlash"),
+              child: const Text("Save"),
             ),
           ],
         ),
