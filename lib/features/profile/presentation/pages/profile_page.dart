@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:task_tracker_app/components/setting_group_widget.dart';
 import 'package:task_tracker_app/core/app_images_icons/app_images.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
+import 'package:task_tracker_app/core/routes/route_names.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
+import 'package:task_tracker_app/features/auth/presentation/bloc/auth_event.dart';
+import 'package:task_tracker_app/features/auth/presentation/bloc/sign_out/sign_out_bloc.dart';
+import 'package:task_tracker_app/features/auth/presentation/bloc/sign_out/sign_out_state.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -20,14 +25,12 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       _selectedIndex = index;
     });
-
-    // Navigation logikasi qo'shish mumkin
-    // if (index == 0) Navigator.push(...);
   }
 
   @override
   Widget build(BuildContext context) {
     ResponsiveHelper.init(context);
+
     return Scaffold(
       backgroundColor: AppColors.black,
       bottomNavigationBar: BottomNavigationBar(
@@ -54,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.only(
-            bottom: ResponsiveHelper.hPixel(100), // Pastdan padding qo‘shildi
+            bottom: ResponsiveHelper.hPixel(100),
           ),
           child: Padding(
             padding: EdgeInsets.symmetric(
@@ -179,24 +182,47 @@ class _ProfilePageState extends State<ProfilePage> {
                       onPressed: () {},
                     ),
                     SizedBox(height: ResponsiveHelper.hPixel(24)),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Row(
-                        children: [
-                          Icon(
-                            IconsaxPlusLinear.logout,
-                            color: AppColors.redColor,
-                          ),
-                          SizedBox(width: ResponsiveHelper.wPixel(10)),
-                          Text(
-                            "Log out",
-                            style: TextStyle(
+                    BlocConsumer<SignOutBloc, SignOutState>(
+                      listener: (context, state) {
+                        if (state is SignOutSuccess) {
+                          Navigator.of(context).pushReplacementNamed(RouteNames.signInPage);
+                        }
+                        if (state is SignOutError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(state.message)),
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is SignOutLoading) {
+                          return Center(
+                            child: CircularProgressIndicator(
                               color: AppColors.redColor,
-                              fontSize: ResponsiveHelper.wPixel(16),
                             ),
+                          );
+                        }
+                        return GestureDetector(
+                          onTap: () {
+                            context.read<SignOutBloc>().add(SignOutEvent());
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                IconsaxPlusLinear.logout,
+                                color: AppColors.redColor,
+                              ),
+                              SizedBox(width: ResponsiveHelper.wPixel(10)),
+                              Text(
+                                "Log out",
+                                style: TextStyle(
+                                  color: AppColors.redColor,
+                                  fontSize: ResponsiveHelper.wPixel(16),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ],
                 ),

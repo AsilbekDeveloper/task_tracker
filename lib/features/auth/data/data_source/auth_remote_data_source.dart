@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 abstract class AuthRemoteDataSource {
   Future<User> signIn({required String email, required String password});
   Future<User> signUp({required String email, required String password});
+  Future<void> signOut();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -33,5 +34,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         message: e.toString(),
       );
     }
+  }
+
+  @override
+  Future<void> signOut() async {
+    await firebaseAuth.signOut();
   }
 }

@@ -15,7 +15,7 @@ class CategoryPickerDialog extends StatelessWidget {
     return Dialog(
       backgroundColor: AppColors.backgroundColor,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         constraints: BoxConstraints(
           maxHeight: ResponsiveHelper.hPixel(400),
           maxWidth: ResponsiveHelper.wPixel(300),
@@ -33,7 +33,18 @@ class CategoryPickerDialog extends StatelessWidget {
               );
             } else if (state is CategoryListSuccess) {
               final categories = state.categoryList.categories;
-              if (categories.isEmpty) {
+
+              final List<String> uniqueNames = [];
+              final uniqueCategories = categories.where((cat) {
+                if (uniqueNames.contains(cat.categoryName)) {
+                  return false;
+                } else {
+                  uniqueNames.add(cat.categoryName);
+                  return true;
+                }
+              }).toList();
+
+              if (uniqueCategories.isEmpty) {
                 return Center(
                   child: Text(
                     'No categories available.',
@@ -41,18 +52,19 @@ class CategoryPickerDialog extends StatelessWidget {
                   ),
                 );
               }
+
               return GridView.builder(
-                itemCount: categories.length,
+                itemCount: uniqueCategories.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                 ),
                 itemBuilder: (context, index) {
-                  final category = categories[index];
+                  final category = uniqueCategories[index];
                   return GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pop(category); // return category
+                      Navigator.of(context).pop(category);
                     },
                     child: Container(
                       decoration: BoxDecoration(

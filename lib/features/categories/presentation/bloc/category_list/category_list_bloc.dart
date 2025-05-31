@@ -29,6 +29,7 @@ class CategoryListBloc extends Bloc<CategoriesEvent, CategoryListState> {
       emit(CategoryListLoading());
       try {
         await addDefaultCategoriesUseCase(event.userId);
+        await Future.delayed(Duration(seconds: 2));
         final categories = await categoryListUseCase(userid: event.userId);
         emit(CategoryListSuccess(categories));
       } catch (e) {

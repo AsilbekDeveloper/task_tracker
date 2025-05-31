@@ -103,7 +103,6 @@ class _EditTaskPageState extends State<EditTaskPage> {
   @override
   Widget build(BuildContext context) {
     ResponsiveHelper.init(context);
-
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
@@ -136,19 +135,19 @@ class _EditTaskPageState extends State<EditTaskPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 10),
+                SizedBox(height: ResponsiveHelper.hPixel(10)),
                 Text("Enter your task title", style: AppTextStyles.normal16),
-                const SizedBox(height: 10),
+                SizedBox(height: ResponsiveHelper.hPixel(10)),
                 TextFieldWidget(controller: taskTitleController, text: AppString.taskTitle),
-                const SizedBox(height: 20),
+                SizedBox(height: ResponsiveHelper.hPixel(20)),
                 Text("Enter your task description", style: AppTextStyles.normal16),
-                const SizedBox(height: 10),
+                SizedBox(height: ResponsiveHelper.hPixel(10)),
                 TextFieldWidget(controller: taskDescController, text: AppString.taskDesc),
-                const SizedBox(height: 30),
+                SizedBox(height: ResponsiveHelper.hPixel(30)),
                 Row(
                   children: [
                     Icon(IconsaxPlusLinear.timer_1, color: AppColors.whiteColor),
-                    const SizedBox(width: 8),
+                    SizedBox(width: ResponsiveHelper.wPixel(8)),
                     Text("Task Time:", style: AppTextStyles.normal16),
                     const Spacer(),
                     TaskTimeWidget(
@@ -157,11 +156,11 @@ class _EditTaskPageState extends State<EditTaskPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: ResponsiveHelper.hPixel(25)),
                 Row(
                   children: [
                     Icon(IconsaxPlusLinear.tag, color: AppColors.whiteColor),
-                    const SizedBox(width: 8),
+                    SizedBox(width: ResponsiveHelper.wPixel(8)),
                     Text("Task Category:", style: AppTextStyles.normal16),
                     const Spacer(),
                     ButtonWidget(
@@ -186,11 +185,11 @@ class _EditTaskPageState extends State<EditTaskPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 25),
+                SizedBox(height: ResponsiveHelper.hPixel(25)),
                 Row(
                   children: [
                     Icon(IconsaxPlusLinear.chart_1, color: AppColors.whiteColor),
-                    const SizedBox(width: 8),
+                    SizedBox(width: ResponsiveHelper.wPixel(8)),
                     Text("Task Priority:", style: AppTextStyles.normal16),
                     const Spacer(),
                     ButtonWidget(
@@ -215,7 +214,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
                   ],
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: ResponsiveHelper.hPixel(270)),
                 MainButton(
                   text: state is EditTaskLoading ? "Loading..." : "Edit Task",
                   onPressed: state is EditTaskLoading ? null : _editTask,

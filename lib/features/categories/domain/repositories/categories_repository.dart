@@ -13,4 +13,6 @@ abstract class CategoriesRepository {
   });
 
   Future<void> addDefaultCategoriesForUser(String userId);
+
+  Future<void> deleteCategory({required String categoryId});
 }

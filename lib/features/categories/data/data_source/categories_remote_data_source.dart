@@ -16,6 +16,8 @@ abstract class CategoriesRemoteDataSource {
     required int color,
   });
   Future<void> addDefaultCategoriesForUser(String userId);
+  
+  Future<void> deleteCategory({required String categoryId});
 }
 
 class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
@@ -140,4 +142,17 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
       throw Exception("Default kategoriyalarni qoʻshishda xatolik: $e");
     }
   }
+
+  @override
+  Future<void> deleteCategory({required String categoryId}) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('categories')
+          .doc(categoryId)
+          .delete();
+    } catch (e) {
+      throw Exception("Kategoriya o'chirishda xato yuz berdi: ${e.toString()}");
+    }
+  }
+
 }

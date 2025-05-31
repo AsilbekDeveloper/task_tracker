@@ -26,7 +26,6 @@ class _TaskTimeWidgetState extends State<TaskTimeWidget> {
   }
 
   Future<void> _pickDateTime() async {
-    // Avval sanani tanlash
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: _selectedDateTime,
@@ -34,17 +33,15 @@ class _TaskTimeWidgetState extends State<TaskTimeWidget> {
       lastDate: DateTime(2100),
     );
 
-    if (pickedDate == null) return; // agar bekor qilinsa, qaytadi
+    if (pickedDate == null) return;
 
-    // Sanani tanlagandan so'ng, vaqtni tanlash
     final pickedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_selectedDateTime),
     );
 
-    if (pickedTime == null) return; // agar vaqt tanlanmasa, qaytadi
+    if (pickedTime == null) return;
 
-    // Yangi tanlangan sana va vaqtni birlashtiramiz
     final pickedDateTime = DateTime(
       pickedDate.year,
       pickedDate.month,

@@ -40,6 +40,15 @@ class CreateCategoryEvent extends CategoriesEvent {
   ];
 }
 
+class DeleteCategoryEvent extends CategoriesEvent {
+   final String categoryId;
+
+  const DeleteCategoryEvent({required this.categoryId});
+
+  @override
+  List<Object> get props => [categoryId];
+}
+
 class AddDefaultCategoriesEvent extends CategoriesEvent {
   final String userId;
 

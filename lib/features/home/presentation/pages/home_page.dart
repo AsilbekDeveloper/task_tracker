@@ -12,6 +12,7 @@ import 'package:task_tracker_app/features/categories/domain/entities/category_en
 import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_bloc.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_state.dart';
+import 'package:task_tracker_app/features/home/presentation/bloc/delete_task/delete_task_bloc.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/get_all_tasks/get_all_tasks_bloc.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/get_all_tasks/get_all_tasks_state.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/task_event.dart';
@@ -137,7 +138,11 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 priority: task.priority.toString(),
                                 value: task.isCompleted,
-                                onChanged: (val) {},
+                                onChanged: (val) {
+                                  context.read<DeleteTaskBloc>().add(DeleteTaskEvent(taskId: task.taskId));
+                                  final userId = FirebaseAuth.instance.currentUser!.uid;
+                                  context.read<GetAllTasksBloc>().add(GetAllTasksEvent(userId: userId));
+                                },
                                 onPressed: () {
                                   Navigator.pushNamed(
                                     context,

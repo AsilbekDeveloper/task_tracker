@@ -34,4 +34,9 @@ class CategoriesRepositoryImpl extends CategoriesRepository {
   Future<void> addDefaultCategoriesForUser(String userId) {
     return categoriesRemoteDataSource.addDefaultCategoriesForUser(userId);
   }
+
+  @override
+  Future<void> deleteCategory({required String categoryId}) {
+    return categoriesRemoteDataSource.deleteCategory(categoryId: categoryId);
+  }
 }

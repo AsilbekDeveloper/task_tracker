@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
+import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 
 class IconDialogWidget extends StatefulWidget {
   final Function(IconData icon) onIconSelected;
@@ -40,25 +41,26 @@ class _IconDialogWidgetState extends State<IconDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
+    ResponsiveHelper.init(context);
     return Dialog(
       insetPadding: const EdgeInsets.all(20),
       child: Container(
-        color: Colors.black, // 🔧 Orqa fon rangi qora
+        color: AppColors.black,
         padding: const EdgeInsets.all(16),
-        height: 500,
+        height: ResponsiveHelper.hPixel(500),
         width: double.maxFinite,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               "Choose an Icon",
               style: TextStyle(
-                fontSize: 20,
+                fontSize: ResponsiveHelper.wPixel(20),
                 fontWeight: FontWeight.bold,
-                color: Colors.white, // 🔧 Matn rangi oq
+                color: Colors.white,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: ResponsiveHelper.hPixel(16)),
             Expanded(
               child: GridView.builder(
                 itemCount: icons.length,
@@ -76,13 +78,13 @@ class _IconDialogWidgetState extends State<IconDialogWidget> {
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.grey.shade800, // 🔧 Orqa fon: qoramtir
+                        color: Colors.grey.shade800,
                       ),
                       padding: const EdgeInsets.all(12),
                       child: Icon(
                         icons[index],
-                        size: 32,
-                        color: Colors.white, // 🔧 Icon rangi oq
+                        size: ResponsiveHelper.wPixel(32),
+                        color: Colors.white,
                       ),
                     ),
                   );

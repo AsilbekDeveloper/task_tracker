@@ -5,8 +5,10 @@ import 'package:task_tracker_app/features/auth/data/data_source/auth_remote_data
 import 'package:task_tracker_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:task_tracker_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:task_tracker_app/features/auth/domain/use_cases/sign_in_use_case.dart';
+import 'package:task_tracker_app/features/auth/domain/use_cases/sign_out_use_case.dart';
 import 'package:task_tracker_app/features/auth/domain/use_cases/sign_up_use_case.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/sign_in/sign_in_bloc.dart';
+import 'package:task_tracker_app/features/auth/presentation/bloc/sign_out/sign_out_bloc.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/sign_up/sign_up_bloc.dart';
 import 'package:task_tracker_app/features/categories/data/data_source/categories_remote_data_source.dart';
 import 'package:task_tracker_app/features/categories/data/repositories/categories_repository_impl.dart';
@@ -14,8 +16,10 @@ import 'package:task_tracker_app/features/categories/domain/repositories/categor
 import 'package:task_tracker_app/features/categories/domain/use_cases/categories_list_use_case.dart';
 import 'package:task_tracker_app/features/categories/domain/use_cases/create_category_use_case.dart';
 import 'package:task_tracker_app/features/categories/domain/use_cases/add_default_categories_use_case.dart';
+import 'package:task_tracker_app/features/categories/domain/use_cases/delete_category_use_case.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_bloc.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/create_category/create_category_bloc.dart';
+import 'package:task_tracker_app/features/categories/presentation/bloc/delete_category/delete_category_bloc.dart';
 import 'package:task_tracker_app/features/home/data/data_source/task_remote_data_source.dart';
 import 'package:task_tracker_app/features/home/data/repositories/task_repository_impl.dart';
 import 'package:task_tracker_app/features/home/domain/repositories/task_repository.dart';
@@ -48,21 +52,25 @@ Future<void> setup() async {
   // UseCases
   sl.registerLazySingleton<SignUpUseCase>(() => SignUpUseCase(authRepository: sl()));
   sl.registerLazySingleton<SignInUseCase>(() => SignInUseCase(authRepository: sl()));
+  sl.registerLazySingleton<SignOutUseCase>(() => SignOutUseCase(authRepository: sl()));
   sl.registerLazySingleton<CategoryListUseCase>(() => CategoryListUseCase(sl()));
   sl.registerLazySingleton<CreateCategoryUseCase>(() => CreateCategoryUseCase(categoryRepository: sl()));
   sl.registerLazySingleton<AddDefaultCategoriesUseCase>(() => AddDefaultCategoriesUseCase(sl()));
-  sl.registerLazySingleton<GetAllTasksUseCase>(() =>GetAllTasksUseCase(sl()));
-  sl.registerLazySingleton<CreateTaskUseCase>(() =>CreateTaskUseCase(sl()));
-  sl.registerLazySingleton<EditTaskUseCase>(() =>EditTaskUseCase(sl()));
-  sl.registerLazySingleton<DeleteTaskUseCase>(() =>DeleteTaskUseCase(sl()));
+  sl.registerLazySingleton<GetAllTasksUseCase>(() => GetAllTasksUseCase(sl()));
+  sl.registerLazySingleton<CreateTaskUseCase>(() => CreateTaskUseCase(sl()));
+  sl.registerLazySingleton<EditTaskUseCase>(() => EditTaskUseCase(sl()));
+  sl.registerLazySingleton<DeleteTaskUseCase>(() => DeleteTaskUseCase(sl()));
+  sl.registerLazySingleton<DeleteCategoryUseCase>(() => DeleteCategoryUseCase(sl()));
 
   // BLoCs
   sl.registerFactory<SignUpBloc>(() => SignUpBloc(signUpUseCase: sl()));
   sl.registerFactory<SignInBloc>(() => SignInBloc(signInUseCase: sl()));
+  sl.registerFactory<SignOutBloc>(() => SignOutBloc(signOutUseCase: sl()));
   sl.registerFactory<CategoryListBloc>(() => CategoryListBloc(categoryListUseCase: sl(), addDefaultCategoriesUseCase: sl(),));
   sl.registerFactory<CreateCategoryBloc>(() => CreateCategoryBloc(createCategoryUseCase: sl()));
   sl.registerFactory<GetAllTasksBloc>(() => GetAllTasksBloc(getAllTasksUseCase: sl()));
   sl.registerFactory<CreateTaskBloc>(() => CreateTaskBloc(createTaskUseCase: sl()));
   sl.registerFactory<EditTaskBloc>(() => EditTaskBloc(editTaskUseCase: sl()));
   sl.registerFactory<DeleteTaskBloc>(() => DeleteTaskBloc(deleteTaskUseCase: sl()));
+  sl.registerFactory<DeleteCategoryBloc>(() => DeleteCategoryBloc(deleteCategoryUseCase: sl()));
 }

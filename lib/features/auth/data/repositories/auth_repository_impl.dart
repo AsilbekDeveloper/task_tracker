@@ -16,4 +16,9 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<User> signUp({required String email, required String password}) {
     return authRemoteDataSource.signUp(email: email, password: password);
   }
+
+  @override
+  Future<void> signOut() {
+    return authRemoteDataSource.signOut();
+  }
 }
