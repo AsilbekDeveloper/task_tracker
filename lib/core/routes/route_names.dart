@@ -14,5 +14,4 @@ class RouteNames {
   static const String singleTaskPage = '/single_task_page';
   static const String editTaskPage = '/edit_task_page';
   static const String singleCategoryPage = '/single_category_page';
-  static const String accountSetupPage = '/account_setup_page';
 }

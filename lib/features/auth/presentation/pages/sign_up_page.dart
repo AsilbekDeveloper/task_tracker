@@ -88,6 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: ResponsiveHelper.hPixel(8)),
                 TextFieldWidget(
+                  key: const Key('signUpEmailField'),
                   controller: emailController,
                   text: AppString.enterEmail,
                 ),
@@ -98,6 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: ResponsiveHelper.hPixel(8)),
                 TextFieldWidget(
+                  key: const Key('signUpPasswordField'),
                   controller: passwordController,
                   text: AppString.enterPassword,
                   isPassword: true,
@@ -109,12 +111,14 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: ResponsiveHelper.hPixel(8)),
                 TextFieldWidget(
+                  key: const Key('signUpConfirmPasswordField'),
                   controller: confirmPasswordController,
                   text: AppString.confirmYourPassword,
                   isPassword: true,
                 ),
                 SizedBox(height: ResponsiveHelper.hPixel(40)),
                 MainButton(
+                  key: const Key('signUpButton'),
                   text: AppString.register,
                   onPressed: () {
                     final email = emailController.text.trim();

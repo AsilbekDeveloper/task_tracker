@@ -154,5 +154,4 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
       throw Exception("Kategoriya o'chirishda xato yuz berdi: ${e.toString()}");
     }
   }
-
 }

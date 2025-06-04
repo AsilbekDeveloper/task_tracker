@@ -96,6 +96,7 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                           SizedBox(height: ResponsiveHelper.hPixel(8)),
                           TextFieldWidget(
+                            key: const Key('signInEmailField'),
                             controller: emailController,
                             text: AppString.enterEmail,
                           ),
@@ -106,12 +107,14 @@ class _SignInPageState extends State<SignInPage> {
                           ),
                           SizedBox(height: ResponsiveHelper.hPixel(8)),
                           TextFieldWidget(
+                            key: const Key('signInPasswordField'),
                             controller: passwordController,
                             text: AppString.enterPassword,
                             isPassword: true,
                           ),
                           SizedBox(height: ResponsiveHelper.hPixel(69)),
                           MainButton(
+                            key: const Key('signInButton'),
                             text: AppString.login,
                             onPressed: () {
                               final email = emailController.text.trim();

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_tracker_app/core/controllers/navigation_controller.dart';
 import 'package:task_tracker_app/core/routes/route_names.dart';
-import 'package:task_tracker_app/features/auth/presentation/pages/account_setup_page.dart';
 import 'package:task_tracker_app/features/auth/presentation/pages/sign_in_page.dart';
 import 'package:task_tracker_app/features/auth/presentation/pages/sign_up_page.dart';
 import 'package:task_tracker_app/features/auth/presentation/pages/splash_page.dart';
@@ -28,8 +27,6 @@ class AppRoute {
         return MaterialPageRoute(builder: (_) => const SignUpPage());
       case RouteNames.signInPage:
         return MaterialPageRoute(builder: (_) => const SignInPage());
-      case RouteNames.accountSetupPage:
-        return MaterialPageRoute(builder: (_) => const AccountSetupPage());
       case RouteNames.homePage:
         return MaterialPageRoute(builder: (_) => const HomePage());
       case RouteNames.categoriesPage:
