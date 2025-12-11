@@ -39,8 +39,6 @@ dev_dependencies:
 
 
 flutter:
-integration_test:
-  enabled: true
   uses-material-design: true
 
   assets:
