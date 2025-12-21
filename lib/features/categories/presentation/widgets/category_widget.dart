@@ -4,7 +4,6 @@ import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 class CategoryCard extends StatelessWidget {
   final String categoryName;
   final int iconCode;
-  final String fontFamily;
   final int color;
   final VoidCallback onPressed;
 
@@ -12,7 +11,6 @@ class CategoryCard extends StatelessWidget {
     super.key,
     required this.categoryName,
     required this.iconCode,
-    required this.fontFamily,
     required this.color,
     required this.onPressed,
   });
@@ -33,7 +31,7 @@ class CategoryCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  IconData(iconCode, fontFamily: fontFamily),
+                  IconData(iconCode, fontFamily: 'MaterialIcons'),
                   size: ResponsiveHelper.wPixel(30),
                   color: Colors.white,
                 ),

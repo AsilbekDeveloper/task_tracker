@@ -1,0 +1,8 @@
+{
+  "base_locale": "en",
+  "fallback_strategy": "base_locale",
+  "input_directory": "lib/assets/i18n",
+  "input_file_pattern": "strings_{locale}.json",
+  "output_directory": "lib/generated",
+  "output_file_name": "strings.g.dart"
+}

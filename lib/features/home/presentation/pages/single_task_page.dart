@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:task_tracker_app/components/main_button.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/routes/route_names.dart';
+import 'package:task_tracker_app/core/components/main_button.dart';
+import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/delete_task/delete_task_bloc.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/delete_task/delete_task_state.dart';
@@ -18,8 +19,7 @@ class SingleTaskPage extends StatelessWidget {
   const SingleTaskPage({
     super.key,
     required this.task,
-    required this.category,
-    required categoryList,
+    required this.category
   });
 
   @override
@@ -32,7 +32,7 @@ class SingleTaskPage extends StatelessWidget {
             SnackBar(content: Text('Task deleted successfully!')),
           );
           context.read<GetAllTasksBloc>().add(GetAllTasksEvent(userId: task.userId));
-          Navigator.pop(context);
+          context.pop();
         } else if (state is DeleteTaskError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.errorMessage)),
@@ -83,7 +83,7 @@ class SingleTaskPage extends StatelessWidget {
               Row(
                 children: [
                   Icon(
-                    IconData(category.iconCode, fontFamily: category.fontFamily),
+                    IconData(category.iconCode, fontFamily: "MaterialIcons"),
                     color: AppColors.whiteColor,
                   ),
                   SizedBox(width: ResponsiveHelper.wPixel(10)),
@@ -100,13 +100,10 @@ class SingleTaskPage extends StatelessWidget {
               MainButton(
                 text: "Edit Task",
                 onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    RouteNames.editTaskPage,
-                    arguments: {
-                      'task': task,
-                      'category': category,
-                    },
+                  context.pushNamed(
+                    RouteNames.editTask,
+                    pathParameters: {'id': task.taskId},
+                    extra: {"task": task, "category": category},
                   );
                 },
                 isDisabled: false,

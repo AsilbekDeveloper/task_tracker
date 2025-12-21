@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/routes/route_names.dart';
+import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/features/calendar/presentation/pages/calendar_page.dart';
 import 'package:task_tracker_app/features/categories/presentation/pages/categories_page.dart';
 import 'package:task_tracker_app/features/home/presentation/pages/home_page.dart';
@@ -81,18 +82,14 @@ class _NavigationControllerState extends State<NavigationController> {
     switch (index) {
       case 0: // HomePage
         return FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, RouteNames.addTaskPage);
-          },
+          onPressed: () => context.pushNamed(RouteNames.addTask),
           backgroundColor: AppColors.primaryColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           child: Icon(Icons.add, color: AppColors.whiteColor),
         );
       case 2: // CategoriesPage
         return FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, RouteNames.createCategoryPage);
-          },
+          onPressed: () => context.pushNamed(RouteNames.createCategory),
           backgroundColor: AppColors.primaryColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           child: Icon(Icons.category, color: AppColors.whiteColor),

@@ -55,18 +55,18 @@ Future<void> setup() async {
   sl.registerLazySingleton<SignOutUseCase>(() => SignOutUseCase(authRepository: sl()));
   sl.registerLazySingleton<CategoryListUseCase>(() => CategoryListUseCase(sl()));
   sl.registerLazySingleton<CreateCategoryUseCase>(() => CreateCategoryUseCase(categoryRepository: sl()));
-  sl.registerLazySingleton<AddDefaultCategoriesUseCase>(() => AddDefaultCategoriesUseCase(sl()));
   sl.registerLazySingleton<GetAllTasksUseCase>(() => GetAllTasksUseCase(sl()));
   sl.registerLazySingleton<CreateTaskUseCase>(() => CreateTaskUseCase(sl()));
   sl.registerLazySingleton<EditTaskUseCase>(() => EditTaskUseCase(sl()));
   sl.registerLazySingleton<DeleteTaskUseCase>(() => DeleteTaskUseCase(sl()));
   sl.registerLazySingleton<DeleteCategoryUseCase>(() => DeleteCategoryUseCase(sl()));
+  sl.registerLazySingleton<AddDefaultCategoriesUseCase>(() => AddDefaultCategoriesUseCase(sl()));
 
   // BLoCs
   sl.registerFactory<SignUpBloc>(() => SignUpBloc(signUpUseCase: sl()));
-  sl.registerFactory<SignInBloc>(() => SignInBloc(signInUseCase: sl()));
+  sl.registerFactory<SignInBloc>(() => SignInBloc(signInUseCase: sl(), addDefaultCategoriesUseCase: sl()));
   sl.registerFactory<SignOutBloc>(() => SignOutBloc(signOutUseCase: sl()));
-  sl.registerFactory<CategoryListBloc>(() => CategoryListBloc(categoryListUseCase: sl(), addDefaultCategoriesUseCase: sl(),));
+  sl.registerFactory<CategoryListBloc>(() => CategoryListBloc(categoryListUseCase: sl()));
   sl.registerFactory<CreateCategoryBloc>(() => CreateCategoryBloc(createCategoryUseCase: sl()));
   sl.registerFactory<GetAllTasksBloc>(() => GetAllTasksBloc(getAllTasksUseCase: sl()));
   sl.registerFactory<CreateTaskBloc>(() => CreateTaskBloc(createTaskUseCase: sl()));

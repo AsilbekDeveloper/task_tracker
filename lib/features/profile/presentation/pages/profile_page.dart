@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:task_tracker_app/components/setting_group_widget.dart';
 import 'package:task_tracker_app/core/app_images_icons/app_images.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/routes/route_names.dart';
+import 'package:task_tracker_app/core/components/setting_group_widget.dart';
+import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/sign_out/sign_out_bloc.dart';
@@ -185,7 +186,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     BlocConsumer<SignOutBloc, SignOutState>(
                       listener: (context, state) {
                         if (state is SignOutSuccess) {
-                          Navigator.of(context).pushReplacementNamed(RouteNames.signInPage);
+                          context.goNamed(RouteNames.signIn);
                         }
                         if (state is SignOutError) {
                           ScaffoldMessenger.of(context).showSnackBar(

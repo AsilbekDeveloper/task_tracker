@@ -6,34 +6,17 @@ import 'package:task_tracker_app/features/categories/presentation/bloc/category_
 
 class CategoryListBloc extends Bloc<CategoriesEvent, CategoryListState> {
   final CategoryListUseCase categoryListUseCase;
-  final AddDefaultCategoriesUseCase addDefaultCategoriesUseCase;
 
   CategoryListBloc({
     required this.categoryListUseCase,
-    required this.addDefaultCategoriesUseCase,
   }) : super(CategoryListInitial()) {
     on<CategoryListEvent>((event, emit) async {
       emit(CategoryListLoading());
       try {
-        await addDefaultCategoriesUseCase(event.userId);
         final categories = await categoryListUseCase(userid: event.userId);
-        print("🔥 Kategoriya soni: ${categories.categories.length}");
         emit(CategoryListSuccess(categories));
       } catch (e) {
         emit(CategoryListError("Server error: ${e.toString()}"));
-      }
-    });
-
-
-    on<AddDefaultCategoriesEvent>((event, emit) async {
-      emit(CategoryListLoading());
-      try {
-        await addDefaultCategoriesUseCase(event.userId);
-        await Future.delayed(Duration(seconds: 2));
-        final categories = await categoryListUseCase(userid: event.userId);
-        emit(CategoryListSuccess(categories));
-      } catch (e) {
-        emit(CategoryListError("Error adding default categories: ${e.toString()}"));
       }
     });
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 
@@ -73,7 +74,7 @@ class _IconDialogWidgetState extends State<IconDialogWidget> {
                   return GestureDetector(
                     onTap: () {
                       widget.onIconSelected(icons[index]);
-                      Navigator.pop(context);
+                      context.pop();
                     },
                     child: Container(
                       decoration: BoxDecoration(

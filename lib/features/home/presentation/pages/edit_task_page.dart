@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:task_tracker_app/components/button_widget.dart';
-import 'package:task_tracker_app/components/categories_dialog.dart';
-import 'package:task_tracker_app/components/main_button.dart';
-import 'package:task_tracker_app/components/priority_widget.dart';
-import 'package:task_tracker_app/components/task_time_widget.dart';
-import 'package:task_tracker_app/components/text_field_widget.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/routes/route_names.dart';
+import 'package:task_tracker_app/core/components/button_widget.dart';
+import 'package:task_tracker_app/core/components/categories_dialog.dart';
+import 'package:task_tracker_app/core/components/main_button.dart';
+import 'package:task_tracker_app/core/components/priority_widget.dart';
+import 'package:task_tracker_app/core/components/task_time_widget.dart';
+import 'package:task_tracker_app/core/components/text_field_widget.dart';
+import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/core/strings/app_string.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 import 'package:task_tracker_app/features/categories/data/models/category_model.dart';
@@ -45,10 +46,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
     selectedPriority = widget.task.priority;
     _endTime = widget.task.endTime;
 
-    _selectedCategory = widget.category ??
+    _selectedCategory =
+        widget.category ??
         CategoryModel(
           iconCode: Icons.question_mark.codePoint,
-          fontFamily: 'MaterialIcons',
           categoryId: '',
           categoryName: 'Unknown',
           userId: '',
@@ -83,7 +84,9 @@ class _EditTaskPageState extends State<EditTaskPage> {
         selectedPriority == null ||
         _selectedCategory == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Iltimos, barcha maydonlarni to‘ldiring.")),
+        const SnackBar(
+          content: Text("Iltimos, barcha maydonlarni to‘ldiring."),
+        ),
       );
       return;
     }
@@ -99,7 +102,6 @@ class _EditTaskPageState extends State<EditTaskPage> {
     context.read<EditTaskBloc>().add(EditTaskEvent(taskEntity: editedTask));
   }
 
-
   @override
   Widget build(BuildContext context) {
     ResponsiveHelper.init(context);
@@ -108,51 +110,73 @@ class _EditTaskPageState extends State<EditTaskPage> {
       appBar: AppBar(
         backgroundColor: AppColors.backgroundColor,
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(IconsaxPlusLinear.close_circle, color: AppColors.whiteColor),
+          onPressed: () => context.pop(),
+          icon: Icon(
+            IconsaxPlusLinear.close_circle,
+            color: AppColors.whiteColor,
+          ),
         ),
         title: Text("Edit Task", style: TextStyle(color: AppColors.whiteColor)),
       ),
       body: BlocConsumer<EditTaskBloc, EditTaskState>(
         listener: (context, state) {
           if (state is EditTaskSuccess) {
-            context.read<GetAllTasksBloc>().add(GetAllTasksEvent(userId: widget.task.userId));
-            Navigator.pushNamed(context, RouteNames.bottomNavbar,);
+            context.read<GetAllTasksBloc>().add(
+              GetAllTasksEvent(userId: widget.task.userId),
+            );
+            context.pushNamed(RouteNames.bottomNavbar);
 
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Vazifa muvaffaqiyatli tahrirlandi")),
+              const SnackBar(
+                content: Text("Vazifa muvaffaqiyatli tahrirlandi"),
+              ),
             );
           } else if (state is EditTaskError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
           }
         },
 
         builder: (context, state) {
           return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: ResponsiveHelper.wPixel(24)),
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveHelper.wPixel(24),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: ResponsiveHelper.hPixel(10)),
                 Text("Enter your task title", style: AppTextStyles.normal16),
                 SizedBox(height: ResponsiveHelper.hPixel(10)),
-                TextFieldWidget(controller: taskTitleController, text: AppString.taskTitle),
+                TextFieldWidget(
+                  controller: taskTitleController,
+                  text: AppString.taskTitle,
+                ),
                 SizedBox(height: ResponsiveHelper.hPixel(20)),
-                Text("Enter your task description", style: AppTextStyles.normal16),
+                Text(
+                  "Enter your task description",
+                  style: AppTextStyles.normal16,
+                ),
                 SizedBox(height: ResponsiveHelper.hPixel(10)),
-                TextFieldWidget(controller: taskDescController, text: AppString.taskDesc),
+                TextFieldWidget(
+                  controller: taskDescController,
+                  text: AppString.taskDesc,
+                ),
                 SizedBox(height: ResponsiveHelper.hPixel(30)),
                 Row(
                   children: [
-                    Icon(IconsaxPlusLinear.timer_1, color: AppColors.whiteColor),
+                    Icon(
+                      IconsaxPlusLinear.timer_1,
+                      color: AppColors.whiteColor,
+                    ),
                     SizedBox(width: ResponsiveHelper.wPixel(8)),
                     Text("Task Time:", style: AppTextStyles.normal16),
                     const Spacer(),
                     TaskTimeWidget(
                       initialDateTime: _endTime,
-                      onDateTimeSelected: (value) => setState(() => _endTime = value),
+                      onDateTimeSelected:
+                          (value) => setState(() => _endTime = value),
                     ),
                   ],
                 ),
@@ -171,13 +195,16 @@ class _EditTaskPageState extends State<EditTaskPage> {
                             Icon(
                               IconData(
                                 _selectedCategory!.iconCode,
-                                fontFamily: _selectedCategory!.fontFamily ?? 'MaterialIcons',
+                                fontFamily: 'MaterialIcons',
                               ),
                               size: 18,
                               color: AppColors.whiteColor,
                             ),
                             const SizedBox(width: 6),
-                            Text(_selectedCategory!.categoryName, style: AppTextStyles.normal12),
+                            Text(
+                              _selectedCategory!.categoryName,
+                              style: AppTextStyles.normal12,
+                            ),
                           ] else
                             Text("Select", style: AppTextStyles.normal12),
                         ],
@@ -188,7 +215,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
                 SizedBox(height: ResponsiveHelper.hPixel(25)),
                 Row(
                   children: [
-                    Icon(IconsaxPlusLinear.chart_1, color: AppColors.whiteColor),
+                    Icon(
+                      IconsaxPlusLinear.chart_1,
+                      color: AppColors.whiteColor,
+                    ),
                     SizedBox(width: ResponsiveHelper.wPixel(8)),
                     Text("Task Priority:", style: AppTextStyles.normal16),
                     const Spacer(),
@@ -211,7 +241,6 @@ class _EditTaskPageState extends State<EditTaskPage> {
                         }
                       },
                     ),
-
                   ],
                 ),
                 SizedBox(height: ResponsiveHelper.hPixel(270)),

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:task_tracker_app/core/routes/route_generator.dart';
-import 'package:task_tracker_app/core/routes/route_names.dart';
+import 'package:task_tracker_app/core/router/app_router.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: appRouter,
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      initialRoute: RouteNames.splashPage,
-      onGenerateRoute: AppRoute(context: context).onGenerateRoute,
     );
   }
 }

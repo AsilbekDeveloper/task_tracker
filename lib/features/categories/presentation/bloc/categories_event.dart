@@ -34,9 +34,8 @@ class CreateCategoryEvent extends CategoriesEvent {
   List<Object> get props => [
     userId,
     categoryName,
-    icon.codePoint,
-    icon.fontFamily ?? '',
-    color.value,
+    icon,
+    color,
   ];
 }
 

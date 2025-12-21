@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:task_tracker_app/core/app_images_icons/app_images.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/routes/route_names.dart';
+import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/core/strings/app_string.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 import 'package:task_tracker_app/features/categories/domain/entities/category_entity.dart';
@@ -118,7 +119,7 @@ class _HomePageState extends State<HomePage> {
 
                               CategoryEntity? category;
                               try {
-                                category = categoryList.categories.firstWhere(
+                                category = categoryList.categoryList.firstWhere(
                                   (cat) => cat.categoryId == task.categoryId,
                                 );
                               } catch (e) {
@@ -132,25 +133,24 @@ class _HomePageState extends State<HomePage> {
                                 dateTime: task.dateTime,
                                 categoryName: category.categoryName,
                                 categoryColor: Color(category.color),
-                                icon: IconData(
-                                  category.iconCode,
-                                  fontFamily: category.fontFamily,
-                                ),
+                                icon: IconData(category.iconCode),
                                 priority: task.priority.toString(),
                                 value: task.isCompleted,
                                 onChanged: (val) {
-                                  context.read<DeleteTaskBloc>().add(DeleteTaskEvent(taskId: task.taskId));
-                                  final userId = FirebaseAuth.instance.currentUser!.uid;
-                                  context.read<GetAllTasksBloc>().add(GetAllTasksEvent(userId: userId));
+                                  context.read<DeleteTaskBloc>().add(
+                                    DeleteTaskEvent(taskId: task.taskId),
+                                  );
+                                  final userId =
+                                      FirebaseAuth.instance.currentUser!.uid;
+                                  context.read<GetAllTasksBloc>().add(
+                                    GetAllTasksEvent(userId: userId),
+                                  );
                                 },
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    RouteNames.singleTaskPage,
-                                    arguments: {
-                                      'task': task,
-                                      'category': category,
-                                    },
+                                  context.pushNamed(
+                                    RouteNames.singleTask,
+                                    pathParameters: {'id': task.taskId},
+                                    extra: {"task": task, "category": category},
                                   );
                                 },
                               );

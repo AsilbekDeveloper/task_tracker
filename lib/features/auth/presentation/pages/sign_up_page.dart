@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_tracker_app/components/main_button.dart';
-import 'package:task_tracker_app/components/social_button_widget.dart';
-import 'package:task_tracker_app/components/text_field_widget.dart';
+import 'package:go_router/go_router.dart';
 import 'package:task_tracker_app/core/app_images_icons/app_images.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/routes/route_names.dart';
+import 'package:task_tracker_app/core/components/main_button.dart';
+import 'package:task_tracker_app/core/components/social_button_widget.dart';
+import 'package:task_tracker_app/core/components/text_field_widget.dart';
+import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/core/strings/app_string.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/auth_event.dart';
@@ -58,7 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return BlocConsumer<SignUpBloc, SignUpState>(
       listener: (context, state) {
         if (state is SignUpSuccess) {
-          Navigator.pushNamed(context, RouteNames.signInPage);
+          context.goNamed(RouteNames.signIn);
         } else if (state is SignUpError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
@@ -184,9 +185,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: AppTextStyles.regularText2,
                     ),
                     TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, RouteNames.signInPage);
-                      },
+                      onPressed: () => context.goNamed(RouteNames.signIn),
                       child: Text(
                         AppString.login,
                         style: AppTextStyles.normal12,

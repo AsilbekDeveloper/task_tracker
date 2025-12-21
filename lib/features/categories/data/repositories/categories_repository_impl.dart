@@ -13,14 +13,12 @@ class CategoriesRepositoryImpl extends CategoriesRepository {
     required String categoryName,
     required String userId,
     required int iconCode,
-    required String? fontFamily,
     required int color,
   }) {
     return categoriesRemoteDataSource.createCategory(
       categoryName: categoryName,
       userId: userId,
       iconCode: iconCode,
-      fontFamily: fontFamily,
       color: color,
     );
   }
@@ -31,12 +29,17 @@ class CategoriesRepositoryImpl extends CategoriesRepository {
   }
 
   @override
-  Future<void> addDefaultCategoriesForUser(String userId) {
-    return categoriesRemoteDataSource.addDefaultCategoriesForUser(userId);
+  Future<void> deleteCategory({required String categoryId}) {
+    return categoriesRemoteDataSource.deleteCategory(categoryId: categoryId);
   }
 
   @override
-  Future<void> deleteCategory({required String categoryId}) {
-    return categoriesRemoteDataSource.deleteCategory(categoryId: categoryId);
+  Future<CategoryEntity> editCategory({required String categoryId, required String categoryName, required int iconCode, required int color}) {
+    return categoriesRemoteDataSource.editCategory(categoryId: categoryId, categoryName: categoryName, iconCode: iconCode, color: color);
+  }
+
+  @override
+  Future<void> addDefaultCategories({required String userId}) {
+    return categoriesRemoteDataSource.addDefaultCategories(userId: userId);
   }
 }

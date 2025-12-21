@@ -32,7 +32,7 @@ class CategoryPickerDialog extends StatelessWidget {
                 ),
               );
             } else if (state is CategoryListSuccess) {
-              final categories = state.categoryList.categories;
+              final categories = state.categoryList.categoryList;
 
               final List<String> uniqueNames = [];
               final uniqueCategories = categories.where((cat) {
@@ -76,8 +76,7 @@ class CategoryPickerDialog extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            IconData(category.iconCode,
-                                fontFamily: category.fontFamily ?? 'MaterialIcons'),
+                            IconData(category.iconCode, fontFamily: 'MaterialIcons'),
                             color: AppColors.whiteColor,
                             size: 30,
                           ),

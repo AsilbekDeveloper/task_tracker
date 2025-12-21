@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_tracker_app/components/categories_dialog.dart';
+import 'package:task_tracker_app/core/components/categories_dialog.dart';
 import 'package:task_tracker_app/features/categories/domain/entities/category_list_entity.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_bloc.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_state.dart';
@@ -45,20 +45,18 @@ void main() {
       CategoryModel(
         categoryName: "Work",
         iconCode: Icons.work.codePoint,
-        color: Colors.blue.value,
-        fontFamily: "MaterialIcons", categoryId: '', userId: '',
+        color: Colors.blue.value, categoryId: '', userId: '',
       ),
       CategoryModel(
         categoryName: "Study",
         iconCode: Icons.book.codePoint,
-        color: Colors.green.value,
-        fontFamily: "MaterialIcons", categoryId: '', userId: '',
+        color: Colors.green.value, categoryId: '', userId: '',
       ),
     ];
 
     when(() => mockBloc.state).thenReturn(
       CategoryListSuccess(
-        CategoryListEntity(categories: categories),
+        CategoryListEntity(categoryList: categories),
       ),
     );
 

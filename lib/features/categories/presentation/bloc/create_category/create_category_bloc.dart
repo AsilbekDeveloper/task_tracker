@@ -15,7 +15,6 @@ class CreateCategoryBloc extends Bloc<CategoriesEvent, CreateCategoryState> {
           categoryName: event.categoryName,
           userId: event.userId,
           iconCode: event.icon.codePoint,
-          fontFamily: event.icon.fontFamily,
           color: event.color.toARGB32(),
         );
 

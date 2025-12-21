@@ -6,6 +6,6 @@ class AddDefaultCategoriesUseCase {
   AddDefaultCategoriesUseCase(this.categoriesRepository);
 
   Future<void> call(String userId) {
-    return categoriesRepository.addDefaultCategoriesForUser(userId);
+    return categoriesRepository.addDefaultCategories(userId: userId);
   }
 }

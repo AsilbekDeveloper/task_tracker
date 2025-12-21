@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_tracker_app/components/text_field_widget.dart';
+import 'package:go_router/go_router.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
+import 'package:task_tracker_app/core/components/text_field_widget.dart';
 import 'package:task_tracker_app/core/strings/app_string.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
@@ -41,7 +42,7 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                 builder: (_) => const Center(child: CircularProgressIndicator()),
               );
             } else {
-              Navigator.of(context, rootNavigator: true).pop();
+              context.pop();
             }
 
             if (state is CreateCategorySuccess) {
@@ -50,7 +51,7 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
               );
               final userId = FirebaseAuth.instance.currentUser!.uid;
               context.read<CategoryListBloc>().add(CategoryListEvent(userId: userId));
-              Navigator.pop(context, true);
+              context.pop(true);
             }
 
             if (state is CreateCategoryError) {
@@ -136,9 +137,7 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
+                        onTap: () => context.pop(),
                         child: Container(
                           width: ResponsiveHelper.wPixel(154),
                           height: ResponsiveHelper.hPixel(48),

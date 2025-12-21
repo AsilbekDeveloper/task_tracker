@@ -8,11 +8,17 @@ abstract class CategoriesRepository {
     required String categoryName,
     required String userId,
     required int iconCode,
-    required String? fontFamily,
     required int color,
   });
 
-  Future<void> addDefaultCategoriesForUser(String userId);
+  Future<CategoryEntity> editCategory({
+    required String categoryId,
+    required String categoryName,
+    required int iconCode,
+    required int color,
+  });
+
+  Future<void> addDefaultCategories({required String userId});
 
   Future<void> deleteCategory({required String categoryId});
 }

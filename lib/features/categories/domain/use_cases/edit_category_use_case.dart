@@ -1,22 +1,22 @@
 import 'package:task_tracker_app/features/categories/domain/entities/category_entity.dart';
 import 'package:task_tracker_app/features/categories/domain/repositories/categories_repository.dart';
 
-class CreateCategoryUseCase {
+class EditCategoryUseCase {
   final CategoriesRepository categoryRepository;
 
-  CreateCategoryUseCase({required this.categoryRepository});
+  EditCategoryUseCase({required this.categoryRepository});
 
   Future<CategoryEntity> call({
     required String categoryName,
-    required String userId,
     required int iconCode,
     required int color,
+    required String categoryId
   }) {
-    return categoryRepository.createCategory(
+    return categoryRepository.editCategory(
       categoryName: categoryName,
-      userId: userId,
       iconCode: iconCode,
       color: color,
+      categoryId: categoryId,
     );
   }
 }

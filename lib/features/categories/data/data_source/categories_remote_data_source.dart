@@ -8,15 +8,23 @@ import 'package:task_tracker_app/features/categories/domain/entities/category_li
 
 abstract class CategoriesRemoteDataSource {
   Future<CategoryListEntity> getCategoryList({required String userId});
+
   Future<CategoryEntity> createCategory({
     required String categoryName,
     required String userId,
     required int iconCode,
-    required String? fontFamily,
     required int color,
   });
-  Future<void> addDefaultCategoriesForUser(String userId);
-  
+
+  Future<CategoryEntity> editCategory({
+    required String categoryId,
+    required String categoryName,
+    required int iconCode,
+    required int color,
+  });
+
+  Future<void> addDefaultCategories({required String userId});
+
   Future<void> deleteCategory({required String categoryId});
 }
 
@@ -35,7 +43,8 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
 
       logger.i("Fetching categories for userId: $userId");
 
-      final snapshot = await firebaseFirestore
+      final snapshot =
+      await firebaseFirestore
           .collection("categories")
           .where("userId", isEqualTo: userId)
           .get();
@@ -49,7 +58,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
 
       logger.i("Categories fetched successfully: ${categories.length}");
 
-      return CategoryListModel(categories: categories);
+      return CategoryListModel(categoryList: categories);
     } catch (e) {
       logger.e("Error fetching categories: $e");
       throw Exception('Kategoriya roʻyxatini olishda xatolik: $e');
@@ -61,7 +70,6 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
     required String categoryName,
     required String userId,
     required int iconCode,
-    required String? fontFamily,
     required int color,
   }) async {
     try {
@@ -69,7 +77,6 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
         "name": categoryName,
         "userId": userId,
         "iconCode": iconCode,
-        "fontFamily": fontFamily,
         "color": color,
       });
 
@@ -80,7 +87,6 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
         categoryName: categoryName,
         userId: userId,
         iconCode: iconCode,
-        fontFamily: fontFamily,
         color: color,
       );
     } catch (e) {
@@ -90,56 +96,57 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
   }
 
   @override
-  Future<void> addDefaultCategoriesForUser(String userId) async {
+  Future<void> addDefaultCategories({required String userId}) async {
     try {
-      final collection = firebaseFirestore.collection('categories');
+      final userRef = firebaseFirestore.collection('users').doc(userId);
 
-      final snapshot = await collection
-          .where("userId", isEqualTo: userId)
-          .limit(1)
-          .get();
+      final userSnapshot = await userRef.get();
 
-      if (snapshot.docs.isNotEmpty) {
-        logger.i("Default categories already exist for user: $userId");
-        return;
+      if (!userSnapshot.exists) {
+        await userRef.set({
+          'hasDefaultCategories': false,
+        });
       }
-      logger.i("Creating default categories for user: $userId");
+
+      final hasDefault =
+          userSnapshot.data()?['hasDefaultCategories'] ?? false;
+
+      if (hasDefault) return;
+
+      final categoriesRef = firebaseFirestore.collection('categories');
 
       final defaultCategories = [
         {
           'name': 'Work',
           'iconCode': Icons.work.codePoint,
-          'fontFamily': Icons.work.fontFamily,
-          'color': Colors.blue.value,
+          'color': Colors.blue,
         },
         {
           'name': 'Study',
           'iconCode': Icons.school.codePoint,
-          'fontFamily': Icons.school.fontFamily,
-          'color': Colors.green.value,
+          'color': Colors.green,
         },
         {
           'name': 'Life',
           'iconCode': Icons.favorite.codePoint,
-          'fontFamily': Icons.favorite.fontFamily,
-          'color': Colors.red.value,
+          'color': Colors.red,
         },
       ];
 
-      for (var category in defaultCategories) {
-        await collection.add({
+      for (final category in defaultCategories) {
+        await categoriesRef.add({
           'name': category['name'],
           'userId': userId,
           'iconCode': category['iconCode'],
-          'fontFamily': category['fontFamily'],
           'color': category['color'],
         });
       }
 
-      logger.i("Default categories created for user: $userId");
+      await userRef.update({
+        'hasDefaultCategories': true,
+      });
     } catch (e) {
-      logger.e("Error adding default categories: $e");
-      throw Exception("Default kategoriyalarni qoʻshishda xatolik: $e");
+      throw Exception('Default category yaratishda xato: $e');
     }
   }
 
@@ -154,4 +161,35 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
       throw Exception("Kategoriya o'chirishda xato yuz berdi: ${e.toString()}");
     }
   }
+
+  @override
+  Future<CategoryEntity> editCategory({
+    required String categoryId,
+    required String categoryName,
+    required int iconCode,
+    required int color,
+  }) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('categories')
+          .doc(categoryId)
+          .update({
+        'name': categoryName,
+        'iconCode': iconCode,
+        'color': color,
+      });
+
+      return CategoryModel(
+        categoryId: categoryId,
+        categoryName: categoryName,
+        userId: '',
+        iconCode: iconCode,
+        color: color,
+      );
+    } catch (e) {
+      logger.e("Error updating category: $e");
+      throw Exception("Error updating data: $e");
+    }
+  }
+
 }

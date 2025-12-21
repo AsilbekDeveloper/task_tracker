@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:task_tracker_app/components/button_widget.dart';
-import 'package:task_tracker_app/components/categories_dialog.dart';
-import 'package:task_tracker_app/components/main_button.dart';
-import 'package:task_tracker_app/components/priority_widget.dart';
-import 'package:task_tracker_app/components/task_time_widget.dart';
-import 'package:task_tracker_app/components/text_field_widget.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
+import 'package:task_tracker_app/core/components/button_widget.dart';
+import 'package:task_tracker_app/core/components/categories_dialog.dart';
+import 'package:task_tracker_app/core/components/main_button.dart';
+import 'package:task_tracker_app/core/components/priority_widget.dart';
+import 'package:task_tracker_app/core/components/task_time_widget.dart';
+import 'package:task_tracker_app/core/components/text_field_widget.dart';
 import 'package:task_tracker_app/core/strings/app_string.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 import 'package:task_tracker_app/features/categories/data/models/category_model.dart';
@@ -88,7 +89,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           );
           final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
           context.read<GetAllTasksBloc>().add(GetAllTasksEvent(userId: userId));
-          Navigator.pop(context);
+          context.pop();
         } else if (state is CreateTaskError) {
           ScaffoldMessenger.of(
             context,
@@ -102,7 +103,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         appBar: AppBar(
           backgroundColor: AppColors.backgroundColor,
           leading: IconButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.pop(),
             icon: Icon(
               IconsaxPlusLinear.close_circle,
               color: AppColors.whiteColor,
@@ -173,9 +174,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             Icon(
                               IconData(
                                 _selectedCategory!.iconCode,
-                                fontFamily:
-                                    _selectedCategory!.fontFamily ??
-                                    'MaterialIcons',
                               ),
                               size: 18,
                               color: AppColors.whiteColor,

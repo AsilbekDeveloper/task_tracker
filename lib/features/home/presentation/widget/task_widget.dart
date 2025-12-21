@@ -42,7 +42,6 @@ class TaskWidget extends StatelessWidget {
         ),
         child: Padding(
           padding: EdgeInsets.only(
-            // left: ResponsiveHelper.wPixel(10),
             right: ResponsiveHelper.wPixel(10),
             top: ResponsiveHelper.hPixel(12),
             bottom: ResponsiveHelper.hPixel(4),
@@ -54,13 +53,11 @@ class TaskWidget extends StatelessWidget {
                 onChanged: onChanged,
                 checkColor: Colors.yellow,
               ),
-              // SizedBox(width: ResponsiveHelper.wPixel(16)),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(title, style: AppTextStyles.normal16),
-                    // SizedBox(height: ResponsiveHelper.hPixel(6)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -88,7 +85,7 @@ class TaskWidget extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Icon(
-                                      icon,
+                                      IconData(icon.codePoint, fontFamily: 'MaterialIcons'),
                                       size: 16,
                                       color: AppColors.whiteColor,
                                     ),

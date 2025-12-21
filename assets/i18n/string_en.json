@@ -1,0 +1,15 @@
+{
+  "login": {
+    "login": "Login",
+    "username": "Username",
+    "enterUsername": "Enter your Username",
+    "enterPassword": "Enter your Password",
+    "or": "or",
+    "loginWithGoogle": "login with Google",
+    "loginWithApple": "login with Apple",
+    "haveNotAccount": "Don't have an account"
+  },
+  "register": {
+    "register": "Register"
+  }
+}

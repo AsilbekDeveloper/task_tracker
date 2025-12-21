@@ -1,14 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
-import 'package:task_tracker_app/components/main_button.dart';
-import 'package:task_tracker_app/components/social_button_widget.dart';
-import 'package:task_tracker_app/components/text_field_widget.dart';
 import 'package:task_tracker_app/core/app_images_icons/app_images.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/routes/route_names.dart';
+import 'package:task_tracker_app/core/components/main_button.dart';
+import 'package:task_tracker_app/core/components/social_button_widget.dart';
+import 'package:task_tracker_app/core/components/text_field_widget.dart';
+import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/core/strings/app_string.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/auth_event.dart';
@@ -59,13 +60,10 @@ class _SignInPageState extends State<SignInPage> {
         if (state is SignInSuccess) {
           final box = await Hive.openBox('userBox');
           await box.put('uid', FirebaseAuth.instance.currentUser?.uid);
-
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            RouteNames.bottomNavbar,
-                (route) => false,
-          );
+          if (!context.mounted) return;
+          context.goNamed(RouteNames.bottomNavbar);
         } else if (state is SignInError) {
+          if (!context.mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
           );
@@ -185,9 +183,7 @@ class _SignInPageState extends State<SignInPage> {
                                 style: AppTextStyles.regularText2,
                               ),
                               TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, RouteNames.signUpPage);
-                                },
+                                onPressed: () => context.pushNamed(RouteNames.signUp),
                                 child: Text(
                                   AppString.register,
                                   style: AppTextStyles.normal12,
