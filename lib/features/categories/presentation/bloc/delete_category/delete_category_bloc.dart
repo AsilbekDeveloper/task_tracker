@@ -1,25 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_tracker_app/features/categories/domain/use_cases/create_category_use_case.dart';
 import 'package:task_tracker_app/features/categories/domain/use_cases/delete_category_use_case.dart';
-import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
-import 'package:task_tracker_app/features/categories/presentation/bloc/create_category/create_category_state.dart';
+import 'package:task_tracker_app/features/categories/presentation/bloc/delete_category/delete_category_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/delete_category/delete_category_state.dart';
-import 'package:task_tracker_app/features/home/domain/use_cases/delete_task_use_case.dart';
 
-class DeleteCategoryBloc extends Bloc<CategoriesEvent, DeleteCategoryState> {
+class DeleteCategoryBloc extends Bloc<DeleteCategoryEvent, DeleteCategoryState> {
   final DeleteCategoryUseCase deleteCategoryUseCase;
+  final FirebaseAuth auth;
 
-  DeleteCategoryBloc({required this.deleteCategoryUseCase})
+  DeleteCategoryBloc({required this.deleteCategoryUseCase, required this.auth})
       : super(DeleteCategoryInitial()) {
-    on<DeleteCategoryEvent>((event, emit) async {
-      emit(DeleteCategoryLoading());
-      try {
-        await deleteCategoryUseCase(categoryId: event.categoryId);
+    on<DeleteCategory>(_onDeleteCategory);
+  }
 
-        emit(DeleteCategorySuccess(event.categoryId));
-      } catch (e) {
-        emit(DeleteCategoryError("Server xatosi: ${e.toString()}"));
+  Future<void> _onDeleteCategory(DeleteCategory event, Emitter<DeleteCategoryState> emit) async {
+    emit(DeleteCategoryLoading());
+    try {
+      final user = auth.currentUser;
+      if (user == null) {
+        emit(const DeleteCategoryError("User not logged in"));
+        return;
       }
-    });
+
+      await deleteCategoryUseCase(categoryId: event.categoryId);
+
+      emit(DeleteCategorySuccess(event.categoryId));
+    } catch (e) {
+      emit(DeleteCategoryError("Server error: ${e.toString()}"));
+    }
   }
 }
