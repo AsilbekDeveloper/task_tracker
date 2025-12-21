@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_tracker_app/features/categories/domain/use_cases/delete_category_use_case.dart';
+import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/delete_category/delete_category_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/delete_category/delete_category_state.dart';
 
-class DeleteCategoryBloc extends Bloc<DeleteCategoryEvent, DeleteCategoryState> {
+class DeleteCategoryBloc extends Bloc<CategoriesEvent, DeleteCategoryState> {
   final DeleteCategoryUseCase deleteCategoryUseCase;
   final FirebaseAuth auth;
 

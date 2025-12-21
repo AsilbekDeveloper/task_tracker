@@ -66,11 +66,11 @@ Future<void> setup() async {
   sl.registerFactory<SignUpBloc>(() => SignUpBloc(signUpUseCase: sl()));
   sl.registerFactory<SignInBloc>(() => SignInBloc(signInUseCase: sl(), addDefaultCategoriesUseCase: sl()));
   sl.registerFactory<SignOutBloc>(() => SignOutBloc(signOutUseCase: sl()));
-  sl.registerFactory<CategoryListBloc>(() => CategoryListBloc(categoryListUseCase: sl()));
-  sl.registerFactory<CreateCategoryBloc>(() => CreateCategoryBloc(createCategoryUseCase: sl()));
+  sl.registerFactory<CategoryListBloc>(() => CategoryListBloc(categoryListUseCase: sl(), auth: sl()));
+  sl.registerFactory<CreateCategoryBloc>(() => CreateCategoryBloc(createCategoryUseCase: sl(), auth: sl()));
   sl.registerFactory<GetAllTasksBloc>(() => GetAllTasksBloc(getAllTasksUseCase: sl()));
   sl.registerFactory<CreateTaskBloc>(() => CreateTaskBloc(createTaskUseCase: sl()));
   sl.registerFactory<EditTaskBloc>(() => EditTaskBloc(editTaskUseCase: sl()));
   sl.registerFactory<DeleteTaskBloc>(() => DeleteTaskBloc(deleteTaskUseCase: sl()));
-  sl.registerFactory<DeleteCategoryBloc>(() => DeleteCategoryBloc(deleteCategoryUseCase: sl()));
+  sl.registerFactory<DeleteCategoryBloc>(() => DeleteCategoryBloc(deleteCategoryUseCase: sl(), auth: sl()));
 }

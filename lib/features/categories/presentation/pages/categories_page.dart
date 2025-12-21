@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -6,9 +5,8 @@ import 'package:iconly/iconly.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
 import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
-import 'package:task_tracker_app/features/categories/domain/entities/category_entity.dart';
-import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_bloc.dart';
+import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_state.dart';
 import 'package:task_tracker_app/features/categories/presentation/widgets/category_widget.dart';
 
@@ -23,12 +21,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   @override
   void initState() {
     super.initState();
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      context.read<CategoryListBloc>().add(
-        CategoryListEvent(userId: currentUser.uid),
-      );
-    }
+    context.read<CategoryListBloc>().add(LoadCategories());
   }
 
   @override
@@ -40,9 +33,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
       appBar: AppBar(
         titleSpacing: ResponsiveHelper.wPixel(24),
         automaticallyImplyLeading: false,
-        title: Text(
+        title: const Text(
           "Categories Page",
-          style: const TextStyle(color: AppColors.whiteColor),
+          style: TextStyle(color: AppColors.whiteColor),
         ),
         backgroundColor: AppColors.backgroundColor,
       ),
@@ -67,6 +60,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       );
                     }
 
+                    // Duplicate names filter
                     final seenNames = <String>{};
                     final uniqueCategories = categories
                         .where((cat) => seenNames.add(cat.categoryName))
@@ -90,9 +84,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                             context.pushNamed(
                               RouteNames.singleCategory,
                               pathParameters: {"id": category.categoryId},
-                              queryParameters: {
-                                "name": category.categoryName,
-                              },
+                              queryParameters: {"name": category.categoryName},
                             );
                           },
                         );
@@ -116,12 +108,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
           final result = await context.pushNamed(RouteNames.createCategory);
 
           if (mounted && result == true) {
-            final currentUser = FirebaseAuth.instance.currentUser;
-            if (currentUser != null) {
-              context.read<CategoryListBloc>().add(
-                CategoryListEvent(userId: currentUser.uid),
-              );
-            }
+            context.read<CategoryListBloc>().add(LoadCategories());
           }
         },
         child: const Icon(IconlyBold.plus),

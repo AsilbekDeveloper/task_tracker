@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_tracker_app/features/categories/domain/use_cases/create_category_use_case.dart';
+import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/create_category/create_category_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/create_category/create_category_state.dart';
 
 class CreateCategoryBloc
-    extends Bloc<CreateCategoryEvent, CreateCategoryState> {
+    extends Bloc<CategoriesEvent, CreateCategoryState> {
   final CreateCategoryUseCase createCategoryUseCase;
   final FirebaseAuth auth;
 

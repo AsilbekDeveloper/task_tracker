@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:task_tracker_app/features/categories/domain/use_cases/categories_list_use_case.dart';
+import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_state.dart';
 
-class CategoryListBloc extends Bloc<CategoryListEvent, CategoryListState> {
+class CategoryListBloc extends Bloc<CategoriesEvent, CategoryListState> {
   final CategoryListUseCase categoryListUseCase;
   final FirebaseAuth auth;
 

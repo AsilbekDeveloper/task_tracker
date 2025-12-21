@@ -7,9 +7,10 @@ import 'package:task_tracker_app/core/colors/app_colors.dart';
 import 'package:task_tracker_app/core/components/text_field_widget.dart';
 import 'package:task_tracker_app/core/strings/app_string.dart';
 import 'package:task_tracker_app/core/utils/responsive_helper.dart';
-import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_bloc.dart';
+import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/create_category/create_category_bloc.dart';
+import 'package:task_tracker_app/features/categories/presentation/bloc/create_category/create_category_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/create_category/create_category_state.dart';
 import 'package:task_tracker_app/features/categories/presentation/widgets/color_selector_widget.dart';
 import 'package:task_tracker_app/features/categories/presentation/widgets/icon_dialog_widget.dart';
@@ -49,8 +50,7 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Kategoriya yaratildi!")),
               );
-              final userId = FirebaseAuth.instance.currentUser!.uid;
-              context.read<CategoryListBloc>().add(CategoryListEvent(userId: userId));
+              context.read<CategoryListBloc>().add(LoadCategories());
               context.pop(true);
             }
 
@@ -172,9 +172,8 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                           }
 
                           context.read<CreateCategoryBloc>().add(
-                            CreateCategoryEvent(
-                              userId: currentUser.uid,
-                              categoryName: name,
+                            CreateCategory(
+                              name: name,
                               icon: icon,
                               color: color,
                             ),

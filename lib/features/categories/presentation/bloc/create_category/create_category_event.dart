@@ -1,14 +1,7 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
 
-abstract class CreateCategoryEvent extends Equatable {
-  const CreateCategoryEvent();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class CreateCategory extends CreateCategoryEvent {
+class CreateCategory extends CategoriesEvent {
   final String name;
   final IconData icon;
   final Color color;

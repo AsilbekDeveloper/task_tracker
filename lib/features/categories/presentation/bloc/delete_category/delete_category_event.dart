@@ -1,13 +1,6 @@
-import 'package:equatable/equatable.dart';
+import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
 
-abstract class DeleteCategoryEvent extends Equatable {
-  const DeleteCategoryEvent();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class DeleteCategory extends DeleteCategoryEvent {
+class DeleteCategory extends CategoriesEvent {
   final String categoryId;
 
   const DeleteCategory({required this.categoryId});
