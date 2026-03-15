@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:task_tracker_app/core/app_text_styles.dart';
-import 'package:task_tracker_app/core/colors/app_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:task_tracker_app/core/components/priority_number.dart';
-import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 
 class PriorityWidget extends StatefulWidget {
   const PriorityWidget({super.key});
@@ -16,29 +15,37 @@ class _PriorityWidgetState extends State<PriorityWidget> {
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper.init(context);
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
       child: Container(
-        width: ResponsiveHelper.wPixel(327),
-        height: ResponsiveHelper.hPixel(360),
+        width: 327.w,
+        height: 360.h,
         decoration: BoxDecoration(
-          color: AppColors.secondBgColor,
-          borderRadius: BorderRadius.circular(8),
+          color: colorScheme.surface, // Theme-based surface
+          borderRadius: BorderRadius.circular(8.r),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Text("Task Priority", style: AppTextStyles.bold16),
-            const Divider(),
-            SizedBox(height: ResponsiveHelper.hPixel(20)),
+            Text(
+              "Task Priority",
+              style: textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface),
+            ),
+            Divider(
+              color: colorScheme.outline,
+              thickness: 1,
+            ),
+            SizedBox(height: 20.h),
             Expanded(
               child: GridView.builder(
                 itemCount: 10,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10.w,
+                  crossAxisSpacing: 10.h,
                   childAspectRatio: 1,
                 ),
                 itemBuilder: (context, index) {
@@ -55,19 +62,24 @@ class _PriorityWidgetState extends State<PriorityWidget> {
                 },
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
+                backgroundColor: colorScheme.primary,
+                foregroundColor: colorScheme.onPrimary,
                 alignment: Alignment.center,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                minimumSize: Size(double.infinity, ResponsiveHelper.hPixel(48)),
-                foregroundColor: AppColors.whiteColor
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.r),
+                ),
+                minimumSize: Size(double.infinity, 48.h),
               ),
               onPressed: () {
-                Navigator.pop(context, selectedPriority);
+                context.pop(selectedPriority);
               },
-              child: const Text("Save"),
+              child: Text(
+                "Save",
+                style: textTheme.bodyLarge?.copyWith(color: colorScheme.onPrimary),
+              ),
             ),
           ],
         ),

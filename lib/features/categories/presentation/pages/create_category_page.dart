@@ -1,12 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
-import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/components/text_field_widget.dart';
-import 'package:task_tracker_app/core/strings/app_string.dart';
-import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_bloc.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/create_category/create_category_bloc.dart';
@@ -14,6 +11,8 @@ import 'package:task_tracker_app/features/categories/presentation/bloc/create_ca
 import 'package:task_tracker_app/features/categories/presentation/bloc/create_category/create_category_state.dart';
 import 'package:task_tracker_app/features/categories/presentation/widgets/color_selector_widget.dart';
 import 'package:task_tracker_app/features/categories/presentation/widgets/icon_dialog_widget.dart';
+import 'package:task_tracker_app/core/components/text_field_widget.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class CreateCategoryPage extends StatefulWidget {
   const CreateCategoryPage({super.key});
@@ -29,18 +28,24 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper.init(context);
+    final t = Translations.of(context);
+    final theme = Theme.of(context);
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: theme.colorScheme.surface,
         body: BlocConsumer<CreateCategoryBloc, CreateCategoryState>(
           listener: (context, state) {
             if (state is CreateCategoryLoading) {
               showDialog(
                 context: context,
                 barrierDismissible: false,
-                builder: (_) => const Center(child: CircularProgressIndicator()),
+                builder:
+                    (_) => Center(
+                      child: CircularProgressIndicator(
+                        color: theme.colorScheme.primary,
+                      ),
+                    ),
               );
             } else {
               context.pop();
@@ -48,36 +53,52 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
 
             if (state is CreateCategorySuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Kategoriya yaratildi!")),
+                SnackBar(content: Text(t.category.categoryCreatedSuccess)),
               );
               context.read<CategoryListBloc>().add(LoadCategories());
               context.pop(true);
             }
 
             if (state is CreateCategoryError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.errorMessage)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
             }
           },
           builder: (context, state) {
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: ResponsiveHelper.wPixel(24)),
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: ResponsiveHelper.hPixel(20)),
-                  Text(AppString.createNewCategory, style: AppTextStyles.bold20),
-                  SizedBox(height: ResponsiveHelper.hPixel(20)),
-                  Text(AppString.categoryNaming, style: AppTextStyles.normal16),
-                  SizedBox(height: ResponsiveHelper.hPixel(16)),
+                  SizedBox(height: 20.h),
+                  Text(
+                    t.category.createNewCategory,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: theme.colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+                  Text(
+                    t.category.categoryNaming,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
                   TextFieldWidget(
                     controller: categoryNameController,
-                    text: AppString.categoryName,
+                    text: t.category.categoryName,
                   ),
-                  SizedBox(height: ResponsiveHelper.hPixel(20)),
-                  Text(AppString.categoryIcon, style: AppTextStyles.normal16),
-                  SizedBox(height: ResponsiveHelper.hPixel(16)),
+                  SizedBox(height: 20.h),
+                  Text(
+                    t.category.categoryIcon,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
                   Row(
                     children: [
                       Expanded(
@@ -85,46 +106,56 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                           onPressed: () {
                             showDialog(
                               context: context,
-                              builder: (_) => IconDialogWidget(
-                                onIconSelected: (icon) {
-                                  setState(() {
-                                    selectedIcon = icon;
-                                  });
-                                },
-                              ),
+                              builder:
+                                  (_) => IconDialogWidget(
+                                    onIconSelected: (icon) {
+                                      setState(() {
+                                        selectedIcon = icon;
+                                      });
+                                    },
+                                  ),
                             );
                           },
                           height: 48,
-                          color: AppColors.secondBgColor,
+                          color: theme.colorScheme.surfaceContainerHighest,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(6.r),
                           ),
                           child: Text(
-                            selectedIcon == null ? AppString.chooseIcon : "Change Icon",
-                            style: AppTextStyles.regularText2,
+                            selectedIcon == null
+                                ? t.category.chooseIcon
+                                : t.category.changeIcon,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onSurface,
+                            ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12.w),
                       if (selectedIcon != null)
                         Container(
-                          width: 48,
-                          height: 48,
+                          width: 48.w,
+                          height: 48.h,
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(8),
+                            color: theme.colorScheme.surfaceContainerHighest,
+                            borderRadius: BorderRadius.circular(8.r),
                           ),
                           child: Icon(
                             selectedIcon,
-                            color: Colors.black87,
-                            size: 28,
+                            color: theme.colorScheme.onSurface,
+                            size: 28.w,
                           ),
                         ),
                     ],
                   ),
-                  SizedBox(height: ResponsiveHelper.hPixel(20)),
-                  Text(AppString.categoryColor, style: AppTextStyles.normal16),
-                  SizedBox(height: ResponsiveHelper.hPixel(16)),
+                  SizedBox(height: 20.h),
+                  Text(
+                    t.category.categoryColor,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
                   ColorSelectorWidget(
                     onColorSelected: (color) {
                       setState(() {
@@ -139,12 +170,18 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                       GestureDetector(
                         onTap: () => context.pop(),
                         child: Container(
-                          width: ResponsiveHelper.wPixel(154),
-                          height: ResponsiveHelper.hPixel(48),
+                          width: 154.w,
+                          height: 48.h,
                           alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.r),
+                            color: theme.colorScheme.surfaceContainerHighest,
+                          ),
                           child: Text(
-                            "Cancel",
-                            style: AppTextStyles.primaryTextColor,
+                            t.category.cancel,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.primary,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -157,8 +194,7 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
 
                           if (name.isEmpty || icon == null || color == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("Iltimos, barcha maydonlarni to‘ldiring")),
+                              SnackBar(content: Text(t.category.fillAllFields)),
                             );
                             return;
                           }
@@ -166,7 +202,7 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                           final currentUser = FirebaseAuth.instance.currentUser;
                           if (currentUser == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Foydalanuvchi tizimga kirgan emas")),
+                              SnackBar(content: Text(t.auth.userNotLoggedIn)),
                             );
                             return;
                           }
@@ -180,22 +216,24 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                           );
                         },
                         child: Container(
-                          width: ResponsiveHelper.wPixel(154),
-                          height: ResponsiveHelper.hPixel(48),
+                          width: 154.w,
+                          height: 48.h,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
-                            borderRadius: BorderRadius.circular(4),
+                            color: theme.colorScheme.primary,
+                            borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Text(
-                            "Create Category",
-                            style: AppTextStyles.normal16,
+                            t.category.createCategory,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onPrimary,
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: ResponsiveHelper.hPixel(20)),
+                  SizedBox(height: 20.h),
                 ],
               ),
             );

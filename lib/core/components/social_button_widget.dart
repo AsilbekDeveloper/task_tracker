@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 
 class SocialButtonWidget extends StatelessWidget {
   final String logoPath;
@@ -17,28 +17,27 @@ class SocialButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper.init(context);
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        height: ResponsiveHelper.hPixel(48),
+        height: 48.h,
         decoration: BoxDecoration(
           border: Border.all(
             style: BorderStyle.solid,
-            color: AppColors.primaryColor,
-            width: ResponsiveHelper.wPixel(1),
+            color: AppColors.brandPrimary,
+            width: 1.w,
           ),
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(4.r),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: ResponsiveHelper.hPixel(12)),
+          padding: EdgeInsets.symmetric(vertical: 12.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(logoPath, height: ResponsiveHelper.hPixel(24),),
-              SizedBox(width: ResponsiveHelper.wPixel(10)),
-              Text(text, style: AppTextStyles.normal16),
+              Image.asset(logoPath, height: 24.h),
+              SizedBox(width: 10.w),
+              Text(text, style: AppTextStyles.bodyLarge),
             ],
           ),
         ),

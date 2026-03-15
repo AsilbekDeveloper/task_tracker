@@ -3,7 +3,15 @@ import 'package:task_tracker_app/features/home/domain/entities/task_list_entity.
 
 abstract class TaskRepository {
   Future<TaskListEntity> getAllTasks({required String userId});
+
   Future<TaskEntity> createTask({required TaskEntity taskEntity});
+
   Future<void> deleteTask({required String taskId});
+
   Future<TaskEntity> editTask({required TaskEntity taskEntity});
+
+  Future<void> updateTaskStatus({
+    required String taskId,
+    required bool isCompleted,
+  });
 }

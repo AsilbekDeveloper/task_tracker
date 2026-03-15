@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 
 class ButtonWidget extends StatelessWidget {
   final Widget child;
@@ -10,17 +10,17 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper.init(context);
     return GestureDetector(
       onTap: onPressed,
       child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: ResponsiveHelper.wPixel(16),
-          vertical: ResponsiveHelper.hPixel(8),
+          horizontal: 15.w,
+          vertical: 8.h,
         ),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6),
-          color: AppColors.white21,
+          borderRadius: BorderRadius.circular(6.r),
+          border: Border.all(color: Theme.of(context).colorScheme.onSurfaceVariant),
+          color: Theme.of(context).colorScheme.surface,
         ),
         child: child,
       ),

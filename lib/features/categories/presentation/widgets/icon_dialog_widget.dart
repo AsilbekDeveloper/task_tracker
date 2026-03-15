@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 
-class IconDialogWidget extends StatefulWidget {
+class IconDialogWidget extends StatelessWidget {
   final Function(IconData icon) onIconSelected;
 
-  const IconDialogWidget({super.key, required this.onIconSelected});
+  const IconDialogWidget({
+    super.key,
+    required this.onIconSelected,
+  });
 
-  @override
-  State<IconDialogWidget> createState() => _IconDialogWidgetState();
-}
-
-class _IconDialogWidgetState extends State<IconDialogWidget> {
-  final List<IconData> icons = [
+  static const List<IconData> _icons = [
     Icons.work,
     Icons.school,
     Icons.favorite,
@@ -42,50 +39,61 @@ class _IconDialogWidgetState extends State<IconDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper.init(context);
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Dialog(
-      insetPadding: const EdgeInsets.all(20),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.r),
+      ),
       child: Container(
-        color: AppColors.black,
-        padding: const EdgeInsets.all(16),
-        height: ResponsiveHelper.hPixel(500),
+        padding: EdgeInsets.all(20.w),
+        height: 480.h,
         width: double.maxFinite,
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(20.r),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Choose an Icon",
               style: TextStyle(
-                fontSize: ResponsiveHelper.wPixel(20),
+                fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: colorScheme.onSurface,
               ),
             ),
-            SizedBox(height: ResponsiveHelper.hPixel(16)),
+            SizedBox(height: 20.h),
+
             Expanded(
               child: GridView.builder(
-                itemCount: icons.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                itemCount: _icons.length,
+                gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16.h,
+                  crossAxisSpacing: 16.w,
                 ),
                 itemBuilder: (context, index) {
-                  return GestureDetector(
+                  final icon = _icons[index];
+
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(50.r),
                     onTap: () {
-                      widget.onIconSelected(icons[index]);
+                      onIconSelected(icon);
                       context.pop();
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.grey.shade800,
+                        color: colorScheme.surface,
                       ),
-                      padding: const EdgeInsets.all(12),
+                      alignment: Alignment.center,
                       child: Icon(
-                        icons[index],
-                        size: ResponsiveHelper.wPixel(32),
-                        color: Colors.white,
+                        icon,
+                        size: 28.sp,
+                        color: colorScheme.primary,
                       ),
                     ),
                   );

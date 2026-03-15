@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
-import 'package:task_tracker_app/core/colors/app_colors.dart';
 import 'package:task_tracker_app/core/components/button_widget.dart';
 import 'package:task_tracker_app/core/components/categories_dialog.dart';
 import 'package:task_tracker_app/core/components/main_button.dart';
@@ -11,14 +11,14 @@ import 'package:task_tracker_app/core/components/priority_widget.dart';
 import 'package:task_tracker_app/core/components/task_time_widget.dart';
 import 'package:task_tracker_app/core/components/text_field_widget.dart';
 import 'package:task_tracker_app/core/router/route_names.dart';
-import 'package:task_tracker_app/core/strings/app_string.dart';
-import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 import 'package:task_tracker_app/features/categories/data/models/category_model.dart';
 import 'package:task_tracker_app/features/home/domain/entities/task_entity.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/edit_task/edit_task_bloc.dart';
+import 'package:task_tracker_app/features/home/presentation/bloc/edit_task/edit_task_event.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/edit_task/edit_task_state.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/get_all_tasks/get_all_tasks_bloc.dart';
-import 'package:task_tracker_app/features/home/presentation/bloc/task_event.dart';
+import 'package:task_tracker_app/features/home/presentation/bloc/get_all_tasks/get_all_tasks_event.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class EditTaskPage extends StatefulWidget {
   final TaskEntity task;
@@ -40,12 +40,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
   @override
   void initState() {
     super.initState();
-
     taskTitleController = TextEditingController(text: widget.task.title);
     taskDescController = TextEditingController(text: widget.task.description);
     selectedPriority = widget.task.priority;
     _endTime = widget.task.endTime;
-
     _selectedCategory =
         widget.category ??
         CategoryModel(
@@ -69,7 +67,6 @@ class _EditTaskPageState extends State<EditTaskPage> {
       context: context,
       builder: (_) => const CategoryPickerDialog(),
     );
-
     if (selectedCategory != null) {
       setState(() {
         _selectedCategory = selectedCategory;
@@ -78,45 +75,39 @@ class _EditTaskPageState extends State<EditTaskPage> {
   }
 
   void _editTask() {
-    if (taskTitleController.text.trim().isEmpty ||
-        taskDescController.text.trim().isEmpty ||
-        _endTime == null ||
-        selectedPriority == null ||
-        _selectedCategory == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Iltimos, barcha maydonlarni to‘ldiring."),
-        ),
-      );
-      return;
-    }
-
     final editedTask = widget.task.copyWith(
       title: taskTitleController.text.trim(),
       description: taskDescController.text.trim(),
-      endTime: _endTime!,
-      categoryId: _selectedCategory!.categoryId,
-      priority: selectedPriority!,
+      endTime: _endTime,
+      categoryId: _selectedCategory?.categoryId,
+      priority: selectedPriority,
     );
-
     context.read<EditTaskBloc>().add(EditTaskEvent(taskEntity: editedTask));
   }
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper.init(context);
+    final t = Translations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: colorScheme.surface,
         leading: IconButton(
           onPressed: () => context.pop(),
           icon: Icon(
             IconsaxPlusLinear.close_circle,
-            color: AppColors.whiteColor,
+            color: colorScheme.onSurface,
           ),
         ),
-        title: Text("Edit Task", style: TextStyle(color: AppColors.whiteColor)),
+        title: Text(
+          t.task.editTask,
+          style: AppTextStyles.displayLarge.copyWith(
+            color: colorScheme.onSurface,
+          ),
+        ),
       ),
       body: BlocConsumer<EditTaskBloc, EditTaskState>(
         listener: (context, state) {
@@ -125,53 +116,80 @@ class _EditTaskPageState extends State<EditTaskPage> {
               GetAllTasksEvent(userId: widget.task.userId),
             );
             context.pushNamed(RouteNames.bottomNavbar);
-
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Vazifa muvaffaqiyatli tahrirlandi"),
+              SnackBar(
+                content: Text(t.task.taskEditedSuccessfully),
+                backgroundColor: colorScheme.primary,
               ),
             );
           } else if (state is EditTaskError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage),
+                backgroundColor: colorScheme.error,
+              ),
+            );
+          } else if (state is EditTaskValidationError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: colorScheme.secondary,
+              ),
+            );
           }
         },
-
         builder: (context, state) {
           return SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: ResponsiveHelper.wPixel(24),
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: ResponsiveHelper.hPixel(10)),
-                Text("Enter your task title", style: AppTextStyles.normal16),
-                SizedBox(height: ResponsiveHelper.hPixel(10)),
+                SizedBox(height: 10.h),
+
+                // Task title
+                Text(
+                  t.task.enterTaskTitle,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                SizedBox(height: 10.h),
                 TextFieldWidget(
                   controller: taskTitleController,
-                  text: AppString.taskTitle,
+                  text: t.task.taskTitle,
                 ),
-                SizedBox(height: ResponsiveHelper.hPixel(20)),
+
+                SizedBox(height: 20.h),
+
+                // Task description
                 Text(
-                  "Enter your task description",
-                  style: AppTextStyles.normal16,
+                  t.task.enterTaskDesc,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
                 ),
-                SizedBox(height: ResponsiveHelper.hPixel(10)),
+                SizedBox(height: 10.h),
                 TextFieldWidget(
                   controller: taskDescController,
-                  text: AppString.taskDesc,
+                  text: t.task.taskDesc,
                 ),
-                SizedBox(height: ResponsiveHelper.hPixel(30)),
+
+                SizedBox(height: 30.h),
+
+                // Task time
                 Row(
                   children: [
                     Icon(
                       IconsaxPlusLinear.timer_1,
-                      color: AppColors.whiteColor,
+                      color: theme.colorScheme.onSurface,
                     ),
-                    SizedBox(width: ResponsiveHelper.wPixel(8)),
-                    Text("Task Time:", style: AppTextStyles.normal16),
+                    SizedBox(width: 8.w),
+                    Text(
+                      t.task.taskTime,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
                     const Spacer(),
                     TaskTimeWidget(
                       initialDateTime: _endTime,
@@ -180,12 +198,23 @@ class _EditTaskPageState extends State<EditTaskPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: ResponsiveHelper.hPixel(25)),
+
+                SizedBox(height: 25.h),
+
+                // Category picker
                 Row(
                   children: [
-                    Icon(IconsaxPlusLinear.tag, color: AppColors.whiteColor),
-                    SizedBox(width: ResponsiveHelper.wPixel(8)),
-                    Text("Task Category:", style: AppTextStyles.normal16),
+                    Icon(
+                      IconsaxPlusLinear.tag,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                    SizedBox(width: 8.w),
+                    Text(
+                      t.task.taskCategory,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
                     const Spacer(),
                     ButtonWidget(
                       onPressed: _showCategoryDialog,
@@ -197,37 +226,54 @@ class _EditTaskPageState extends State<EditTaskPage> {
                                 _selectedCategory!.iconCode,
                                 fontFamily: 'MaterialIcons',
                               ),
-                              size: 18,
-                              color: AppColors.whiteColor,
+                              size: 18.w,
+                              color: theme.colorScheme.onSurface,
                             ),
-                            const SizedBox(width: 6),
+                            SizedBox(width: 6.w),
                             Text(
                               _selectedCategory!.categoryName,
-                              style: AppTextStyles.normal12,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurface,
+                              ),
                             ),
                           ] else
-                            Text("Select", style: AppTextStyles.normal12),
+                            Text(
+                              t.task.select,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurface,
+                              ),
+                            ),
                         ],
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: ResponsiveHelper.hPixel(25)),
+
+                SizedBox(height: 25.h),
+
+                // Priority picker
                 Row(
                   children: [
                     Icon(
                       IconsaxPlusLinear.chart_1,
-                      color: AppColors.whiteColor,
+                      color: theme.colorScheme.onSurface,
                     ),
-                    SizedBox(width: ResponsiveHelper.wPixel(8)),
-                    Text("Task Priority:", style: AppTextStyles.normal16),
+                    SizedBox(width: 8.w),
+                    Text(
+                      t.task.taskPriority,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
                     const Spacer(),
                     ButtonWidget(
                       child: Text(
                         selectedPriority != null
-                            ? "Priority: $selectedPriority"
-                            : "Priority tanlash",
-                        style: AppTextStyles.normal12,
+                            ? "${t.task.priority}: $selectedPriority"
+                            : t.task.selectPriority,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurface,
+                        ),
                       ),
                       onPressed: () async {
                         final result = await showDialog<int>(
@@ -235,21 +281,25 @@ class _EditTaskPageState extends State<EditTaskPage> {
                           builder: (context) => const PriorityWidget(),
                         );
                         if (result != null) {
-                          setState(() {
-                            selectedPriority = result;
-                          });
+                          setState(() => selectedPriority = result);
                         }
                       },
                     ),
                   ],
                 ),
-                SizedBox(height: ResponsiveHelper.hPixel(270)),
+
+                SizedBox(height: 250.h),
+
+                // Save button
                 MainButton(
-                  text: state is EditTaskLoading ? "Loading..." : "Edit Task",
+                  text:
+                      state is EditTaskLoading
+                          ? t.task.loading
+                          : t.task.editTask,
                   onPressed: state is EditTaskLoading ? null : _editTask,
-                  isDisabled: state is EditTaskLoading,
                 ),
-                const SizedBox(height: 20),
+
+                SizedBox(height: 20.h),
               ],
             ),
           );

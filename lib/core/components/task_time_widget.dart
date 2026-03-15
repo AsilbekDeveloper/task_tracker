@@ -26,18 +26,57 @@ class _TaskTimeWidgetState extends State<TaskTimeWidget> {
   }
 
   Future<void> _pickDateTime() async {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    // ================== Date Picker ==================
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: _selectedDateTime,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: theme.copyWith(
+            colorScheme: colorScheme.copyWith(
+              primary: colorScheme.primary, // topbar button color
+              onPrimary: colorScheme.onPrimary, // button text color
+              surface: colorScheme.surface, // dialog background
+              onSurface: colorScheme.onSurface, // text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(foregroundColor: colorScheme.primary),
+            ),
+            dialogTheme: DialogThemeData(backgroundColor: colorScheme.surface),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (pickedDate == null) return;
 
+    // ================== Time Picker ==================
     final pickedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_selectedDateTime),
+      builder: (context, child) {
+        return Theme(
+          data: theme.copyWith(
+            colorScheme: colorScheme.copyWith(
+              primary: colorScheme.primary,
+              onPrimary: colorScheme.onPrimary,
+              surface: colorScheme.surface,
+              onSurface: colorScheme.onSurface,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(foregroundColor: colorScheme.primary),
+            ),
+            dialogTheme: DialogThemeData(backgroundColor: colorScheme.surface),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (pickedTime == null) return;
@@ -50,10 +89,7 @@ class _TaskTimeWidgetState extends State<TaskTimeWidget> {
       pickedTime.minute,
     );
 
-    setState(() {
-      _selectedDateTime = pickedDateTime;
-    });
-
+    setState(() => _selectedDateTime = pickedDateTime);
     widget.onDateTimeSelected(pickedDateTime);
   }
 
@@ -70,11 +106,13 @@ class _TaskTimeWidgetState extends State<TaskTimeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return ButtonWidget(
       onPressed: _pickDateTime,
       child: Text(
         _formattedDateTime,
-        style: AppTextStyles.normal12,
+        style: AppTextStyles.bodyLarge.copyWith(color: colorScheme.onSurface),
       ),
     );
   }

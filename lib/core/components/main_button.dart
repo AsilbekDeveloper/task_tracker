@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_tracker_app/core/app_text_styles.dart';
-import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/utils/responsive_helper.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MainButton extends StatelessWidget {
   final String text;
@@ -9,36 +7,36 @@ class MainButton extends StatelessWidget {
   final bool isDisabled;
 
   const MainButton({
+    super.key,
     required this.text,
     required this.onPressed,
-    required this.isDisabled,
-    super.key,
+    this.isDisabled = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper.init(context);
+    final colorScheme = Theme.of(context).colorScheme;
+    final textStyle = Theme.of(context).textTheme.bodyLarge;
+
     return SizedBox(
       width: double.infinity,
-      height: ResponsiveHelper.hPixel(48),
+      height: 48.h,
       child: ElevatedButton(
-        onPressed: onPressed,
-        style: ButtonStyle(
-          shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        onPressed: isDisabled ? null : onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: isDisabled
+              ? colorScheme.onSurface.withOpacity(0.3)
+              : colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.r),
           ),
-          backgroundColor: WidgetStateProperty.all(
-            isDisabled ? AppColors.buttonDefault : AppColors.primaryColor,
-          ),
-        ),
-        child: Text(
-          text,
-          style: isDisabled
-              ? AppTextStyles.textButtonDisabled
-              : AppTextStyles.textButtonDisabled.copyWith(
-            color: AppColors.whiteColor,
+          padding: EdgeInsets.symmetric(vertical: 14.h),
+          textStyle: textStyle?.copyWith(
+            fontWeight: FontWeight.w600,
           ),
         ),
+        child: Text(text),
       ),
     );
   }

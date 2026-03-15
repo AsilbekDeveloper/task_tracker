@@ -1,19 +1,42 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
-abstract class AppColors {
-  static const Color backgroundColor = Color(0xFF121212); // Background
-  static const Color primaryColor = Color(0xFF8875FF); // Primary
-  static const Color whiteGreyColor = Color(0x70FFFFFF); // Primary
-  static const Color whiteColor = Color(0xFFFFFFFF); // Primary
-  static const Color buttonDefault = Color(0x808687E7); // Primary
-  static const Color redColor = Color(0xFFFF4949); // Red
-  static const Color borderColor = Color(0xFF979797); // Border Color
-  static const Color inputTextColor = Color(0xFF535353); // Fill Color
-  static const Color disabledTextColor = Color(0x80FFFFFF); // Fill Color
-  static const Color fillColor = Color(0x801D1D1D); // Fill Color
-  static const Color secondBgColor = Color(0xFF363636); // Second Background Color
-  static const Color white21 = Color(0x36FFFFFF);
-  static const Color black2727 = Color(0xFF272727);
-  static const Color black = Color(0xFF000000);
-  static const Color greyAF = Color(0xFFAFAFAF);
+abstract final class AppColors {
+  AppColors._();
+
+  // ========================
+  // Brand Colors
+  // ========================
+
+  static const Color brandPrimary = Color(0xFF8875FF);
+  static const Color brandDanger = Color(0xFFFF4949);
+
+  // ========================
+  // Neutral - Light Theme
+  // ========================
+
+  static const Color lightSurface = Color(0xFFFFFFFF);
+  static const Color lightSurfaceVariant = Color(0xFFF5F5F5);
+  static const Color lightBorder = Color(0xFF979797);
+  static const Color lightOnSurface = Color(0xFF000000);
+  static const Color lightOnSurfaceVariant = Color(0xFF535353);
+  static const Color lightDisabled = Color(0x61000000);
+
+  // ========================
+  // Neutral - Dark Theme
+  // ========================
+
+  static const Color darkSurface = Color(0xFF121212);
+  static const Color darkSurfaceVariant = Color(0xFF1D1D1D);
+  static const Color darkContainer = Color(0xFF272727);
+  static const Color darkBorder = Color(0xFF363636);
+  static const Color darkOnSurface = Color(0xFFFFFFFF);
+  static const Color darkOnSurfaceVariant = Color(0xFFAFAFAF);
+  static const Color darkDisabled = Color(0x80FFFFFF);
+
+  // ========================
+  // Overlay / Effects
+  // ========================
+
+  static const Color whiteOverlayLow = Color(0x36FFFFFF);
+  static const Color whiteOverlayMedium = Color(0x70FFFFFF);
 }

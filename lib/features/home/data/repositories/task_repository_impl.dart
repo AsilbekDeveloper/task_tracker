@@ -28,4 +28,14 @@ class TaskRepositoryImpl extends TaskRepository {
     return taskRemoteDataSource.editTask(taskEntity: taskEntity);
   }
 
+  @override
+  Future<void> updateTaskStatus({
+    required String taskId,
+    required bool isCompleted,
+  }) async {
+    return taskRemoteDataSource.updateTaskStatus(
+      taskId: taskId,
+      isCompleted: isCompleted,
+    );
+  }
 }

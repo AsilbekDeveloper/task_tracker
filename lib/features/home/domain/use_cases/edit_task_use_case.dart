@@ -7,6 +7,11 @@ class EditTaskUseCase {
   EditTaskUseCase(this._taskRepository);
 
   Future<TaskEntity> call({required TaskEntity taskEntity}) {
+    if (taskEntity.title.trim().isEmpty ||
+        taskEntity.description.trim().isEmpty ||
+        taskEntity.categoryId.isEmpty) {
+      throw Exception("VALIDATION_ERROR");
+    }
     return _taskRepository.editTask(taskEntity: taskEntity);
   }
 }

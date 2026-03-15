@@ -5,6 +5,7 @@ import 'package:task_tracker_app/features/home/domain/entities/task_entity.dart'
 import 'package:task_tracker_app/features/home/domain/entities/task_list_entity.dart';
 import 'package:task_tracker_app/features/home/domain/use_cases/get_all_tasks_use_case.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/get_all_tasks/get_all_tasks_bloc.dart';
+import 'package:task_tracker_app/features/home/presentation/bloc/get_all_tasks/get_all_tasks_event.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/get_all_tasks/get_all_tasks_state.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/task_event.dart';
 

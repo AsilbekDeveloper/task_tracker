@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconly/iconly.dart';
-import 'package:task_tracker_app/core/colors/app_colors.dart';
 import 'package:task_tracker_app/core/router/route_names.dart';
-import 'package:task_tracker_app/core/utils/responsive_helper.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_bloc.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_state.dart';
@@ -26,41 +26,53 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper.init(context);
+    final t = Translations.of(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        titleSpacing: ResponsiveHelper.wPixel(24),
+        titleSpacing: 24.w,
         automaticallyImplyLeading: false,
-        title: const Text(
-          "Categories Page",
-          style: TextStyle(color: AppColors.whiteColor),
+        title: Text(
+          t.category.categoriesPage,
+          style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.onSurface),
         ),
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: theme.colorScheme.surface,
+        iconTheme: IconThemeData(color: theme.colorScheme.onSurface),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: ResponsiveHelper.wPixel(24)),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
           children: [
-            SizedBox(height: ResponsiveHelper.hPixel(10)),
+            SizedBox(height: 10.h),
             Expanded(
               child: BlocBuilder<CategoryListBloc, CategoryListState>(
                 builder: (context, state) {
                   if (state is CategoryListLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: CircularProgressIndicator(color: theme.colorScheme.primary),
+                    );
                   } else if (state is CategoryListError) {
-                    return Center(child: Text("Error: ${state.errorMessage}"));
+                    return Center(
+                      child: Text(
+                        "${t.category.errorLoadingCategories}: ${state.errorMessage}",
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface),
+                      ),
+                    );
                   } else if (state is CategoryListSuccess) {
                     final categories = state.categoryList.categoryList;
 
                     if (categories.isEmpty) {
-                      return const Center(
-                        child: Text('No categories available.'),
+                      return Center(
+                        child: Text(
+                          t.category.noCategoriesAvailable,
+                          style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface),
+                        ),
                       );
                     }
 
-                    // Duplicate names filter
                     final seenNames = <String>{};
                     final uniqueCategories = categories
                         .where((cat) => seenNames.add(cat.categoryName))
@@ -68,11 +80,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
                     return GridView.builder(
                       itemCount: uniqueCategories.length,
-                      gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10.w,
+                        mainAxisSpacing: 10.h,
                       ),
                       itemBuilder: (context, index) {
                         final category = uniqueCategories[index];
@@ -91,8 +102,11 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       },
                     );
                   } else {
-                    return const Center(
-                      child: Text('No categories available.'),
+                    return Center(
+                      child: Text(
+                        t.category.noCategoriesAvailable,
+                        style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface),
+                      ),
                     );
                   }
                 },
@@ -103,7 +117,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: null,
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: theme.colorScheme.primary,
         onPressed: () async {
           final result = await context.pushNamed(RouteNames.createCategory);
 
@@ -111,7 +125,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             context.read<CategoryListBloc>().add(LoadCategories());
           }
         },
-        child: const Icon(IconlyBold.plus),
+        child: Icon(IconlyBold.plus, color: theme.colorScheme.onPrimary),
       ),
     );
   }

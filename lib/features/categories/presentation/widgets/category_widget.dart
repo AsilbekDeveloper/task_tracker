@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_tracker_app/core/utils/responsive_helper.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CategoryCard extends StatelessWidget {
   final String categoryName;
@@ -17,29 +17,28 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper.init(context);
     return GestureDetector(
       onTap: onPressed,
       child: Card(
         color: Color(color),
         elevation: 5,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.w),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   IconData(iconCode, fontFamily: 'MaterialIcons'),
-                  size: ResponsiveHelper.wPixel(30),
+                  size: 30.w,
                   color: Colors.white,
                 ),
-                SizedBox(height: ResponsiveHelper.hPixel(8)),
+                SizedBox(height: 8.h),
                 Text(
                   categoryName.isEmpty ? 'No name' : categoryName,
                   style: TextStyle(
-                    fontSize: ResponsiveHelper.wPixel(16),
+                    fontSize: 16.w,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),

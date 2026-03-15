@@ -119,17 +119,17 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
         {
           'name': 'Work',
           'iconCode': Icons.work.codePoint,
-          'color': Colors.blue,
+          'color': Colors.blue.toARGB32(),
         },
         {
           'name': 'Study',
           'iconCode': Icons.school.codePoint,
-          'color': Colors.green,
+          'color': Colors.green.toARGB32(),
         },
         {
           'name': 'Life',
           'iconCode': Icons.favorite.codePoint,
-          'color': Colors.red,
+          'color': Colors.red.toARGB32(),
         },
       ];
 

@@ -21,6 +21,17 @@ class CreateTaskSuccess extends CreateTaskState {
   List<Object?> get props => [newTask];
 }
 
+/// ✅ New state for validation errors
+class CreateTaskValidationError extends CreateTaskState {
+  final String errorMessage;
+
+  const CreateTaskValidationError(this.errorMessage);
+
+  @override
+  List<Object?> get props => [errorMessage];
+}
+
+/// ✅ State for server/firebase errors
 class CreateTaskError extends CreateTaskState {
   final String errorMessage;
 

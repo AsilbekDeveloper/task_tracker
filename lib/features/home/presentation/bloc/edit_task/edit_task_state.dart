@@ -29,3 +29,12 @@ class EditTaskError extends EditTaskState {
   @override
   List<Object?> get props => [errorMessage];
 }
+
+class EditTaskValidationError extends EditTaskState {
+  final String message;
+
+  const EditTaskValidationError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_tracker_app/core/utils/responsive_helper.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ColorSelectorWidget extends StatefulWidget {
   final Function(Color) onColorSelected;
@@ -25,7 +25,6 @@ class _ColorSelectorWidgetState extends State<ColorSelectorWidget> {
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper.init(context);
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -39,14 +38,14 @@ class _ColorSelectorWidgetState extends State<ColorSelectorWidget> {
               widget.onColorSelected(color);
             },
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: ResponsiveHelper.wPixel(6)),
-              width: ResponsiveHelper.wPixel(36),
-              height: ResponsiveHelper.hPixel(36),
+              margin: EdgeInsets.symmetric(horizontal: 6.w),
+              width: 36.w,
+              height: 36.h,
               decoration: BoxDecoration(
                 color: color,
                 shape: BoxShape.circle,
                 border: isSelected
-                    ? Border.all(color: Colors.white, width: ResponsiveHelper.wPixel(3))
+                    ? Border.all(color: Colors.white, width: 3.w)
                     : null,
               ),
             ),

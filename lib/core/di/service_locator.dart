@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:task_tracker_app/core/theme/theme_bloc.dart';
 import 'package:task_tracker_app/features/auth/data/data_source/auth_remote_data_source.dart';
 import 'package:task_tracker_app/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:task_tracker_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:task_tracker_app/features/auth/domain/use_cases/google_sign_in_use_case.dart';
 import 'package:task_tracker_app/features/auth/domain/use_cases/sign_in_use_case.dart';
 import 'package:task_tracker_app/features/auth/domain/use_cases/sign_out_use_case.dart';
 import 'package:task_tracker_app/features/auth/domain/use_cases/sign_up_use_case.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/sign_in/sign_in_bloc.dart';
+import 'package:task_tracker_app/features/auth/presentation/bloc/sign_in_with_google/google_sign_in_bloc.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/sign_out/sign_out_bloc.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/sign_up/sign_up_bloc.dart';
 import 'package:task_tracker_app/features/categories/data/data_source/categories_remote_data_source.dart';
@@ -27,10 +31,13 @@ import 'package:task_tracker_app/features/home/domain/use_cases/create_task_use_
 import 'package:task_tracker_app/features/home/domain/use_cases/delete_task_use_case.dart';
 import 'package:task_tracker_app/features/home/domain/use_cases/edit_task_use_case.dart';
 import 'package:task_tracker_app/features/home/domain/use_cases/get_all_tasks_use_case.dart';
+import 'package:task_tracker_app/features/home/domain/use_cases/update_task_status_use_case.dart';
+import 'package:task_tracker_app/features/home/presentation/bloc/calendar/calendar_bloc.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/create_task/create_task_bloc.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/delete_task/delete_task_bloc.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/edit_task/edit_task_bloc.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/get_all_tasks/get_all_tasks_bloc.dart';
+import 'package:task_tracker_app/features/home/presentation/bloc/update_task/update_task_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -38,9 +45,10 @@ Future<void> setup() async {
   // Registering Firebase services
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
+  sl.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
 
   // RemoteDataSource
-  sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(sl()));
+  sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(sl(), sl()));
   sl.registerLazySingleton<CategoriesRemoteDataSource>(() => CategoriesRemoteDataSourceImpl(sl()));
   sl.registerLazySingleton<TaskRemoteDataSource>(() => TaskRemoteDataSourceImpl(sl()));
 
@@ -61,6 +69,8 @@ Future<void> setup() async {
   sl.registerLazySingleton<DeleteTaskUseCase>(() => DeleteTaskUseCase(sl()));
   sl.registerLazySingleton<DeleteCategoryUseCase>(() => DeleteCategoryUseCase(sl()));
   sl.registerLazySingleton<AddDefaultCategoriesUseCase>(() => AddDefaultCategoriesUseCase(sl()));
+  sl.registerLazySingleton<GoogleSignInUseCase>(() => GoogleSignInUseCase(repository: sl()));
+  sl.registerLazySingleton<UpdateTaskStatusUseCase>(() => UpdateTaskStatusUseCase(sl()));
 
   // BLoCs
   sl.registerFactory<SignUpBloc>(() => SignUpBloc(signUpUseCase: sl()));
@@ -73,4 +83,8 @@ Future<void> setup() async {
   sl.registerFactory<EditTaskBloc>(() => EditTaskBloc(editTaskUseCase: sl()));
   sl.registerFactory<DeleteTaskBloc>(() => DeleteTaskBloc(deleteTaskUseCase: sl()));
   sl.registerFactory<DeleteCategoryBloc>(() => DeleteCategoryBloc(deleteCategoryUseCase: sl(), auth: sl()));
+  sl.registerFactory<GoogleSignInBloc>(() => GoogleSignInBloc(googleSignInUseCase: sl(), addDefaultCategoriesUseCase: sl()));
+  sl.registerFactory<UpdateTaskBloc>(() => UpdateTaskBloc(updateTaskStatusUseCase: sl()));
+  sl.registerFactory<SelectedDateBloc>(() => SelectedDateBloc());
+  sl.registerLazySingleton<ThemeBloc>(() => ThemeBloc());
 }

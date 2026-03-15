@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 
 class TaskWidget extends StatelessWidget {
   final VoidCallback onPressed;
@@ -30,21 +30,22 @@ class TaskWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper.init(context);
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: onPressed,
       child: Container(
         width: double.infinity,
-        height: ResponsiveHelper.hPixel(72),
+        height: 72.h,
         decoration: BoxDecoration(
-          color: AppColors.secondBgColor,
+          color: theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(5),
         ),
         child: Padding(
           padding: EdgeInsets.only(
-            right: ResponsiveHelper.wPixel(10),
-            top: ResponsiveHelper.hPixel(12),
-            bottom: ResponsiveHelper.hPixel(4),
+            right: 10.w,
+            top: 12.h,
+            bottom: 4.h,
           ),
           child: Row(
             children: [
@@ -57,21 +58,24 @@ class TaskWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: AppTextStyles.normal16),
+                    Text(
+                      title,
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(color: theme.colorScheme.onSurface),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           "${dateTime.day.toString().padLeft(2, '0')}.${dateTime.month.toString().padLeft(2, '0')}.${dateTime.year} at ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}",
-                          style: TextStyle(
-                            color: const Color(0xFFAFAFAF),
-                            fontSize: 14,
-                          ),
+                          style: theme.textTheme.bodySmall
+                              ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            // Category badge
                             Container(
                               decoration: BoxDecoration(
                                 color: categoryColor,
@@ -79,47 +83,52 @@ class TaskWidget extends StatelessWidget {
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: ResponsiveHelper.wPixel(8),
-                                  vertical: ResponsiveHelper.hPixel(4),
+                                  horizontal: 8.w,
+                                  vertical: 4.h,
                                 ),
                                 child: Row(
                                   children: [
                                     Icon(
-                                      IconData(icon.codePoint, fontFamily: 'MaterialIcons'),
-                                      size: 16,
-                                      color: AppColors.whiteColor,
+                                      IconData(icon.codePoint,
+                                          fontFamily: 'MaterialIcons'),
+                                      size: 16.w,
+                                      color: theme.colorScheme.onPrimary,
                                     ),
-                                    SizedBox(width: ResponsiveHelper.wPixel(5)),
+                                    SizedBox(width: 5.w),
                                     Text(
                                       categoryName,
-                                      style: TextStyle(
-                                        color: AppColors.whiteColor,
-                                      ),
+                                      style: theme.textTheme.bodySmall
+                                          ?.copyWith(color: theme.colorScheme.onPrimary),
                                     ),
                                   ],
                                 ),
                               ),
                             ),
-                            SizedBox(width: ResponsiveHelper.wPixel(12)),
+                            SizedBox(width: 12.w),
+                            // Priority badge
                             Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
+                                borderRadius: BorderRadius.circular(4.r),
                                 border: Border.all(
-                                  color: AppColors.primaryColor,
-                                  width: 1,
+                                  color: theme.colorScheme.primary,
+                                  width: 1.w,
                                 ),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(4),
                                 child: Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       IconsaxPlusLinear.flag,
-                                      size: 16,
-                                      color: AppColors.whiteColor,
+                                      size: 16.w,
+                                      color: theme.colorScheme.onSurface,
                                     ),
-                                    SizedBox(width: ResponsiveHelper.wPixel(5)),
-                                    Text(priority, style: AppTextStyles.normal12),
+                                    SizedBox(width: 5.w),
+                                    Text(
+                                      priority,
+                                      style: theme.textTheme.bodySmall
+                                          ?.copyWith(color: theme.colorScheme.onSurface),
+                                    ),
                                   ],
                                 ),
                               ),

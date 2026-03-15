@@ -21,4 +21,9 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<void> signOut() {
     return authRemoteDataSource.signOut();
   }
+
+  @override
+  Future<User?> signInWithGoogle() {
+    return authRemoteDataSource.signInWithGoogle();
+  }
 }

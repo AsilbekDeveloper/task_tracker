@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:task_tracker_app/core/colors/app_colors.dart';
-import 'package:task_tracker_app/core/utils/responsive_helper.dart';
 
 class SettingGroupWidget extends StatelessWidget {
   final IconData icon;
@@ -11,23 +11,22 @@ class SettingGroupWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ResponsiveHelper.init(context);
     return GestureDetector(
       onTap: onPressed,
       child: Row(
         children: [
-          Icon(icon, color: AppColors.whiteColor),
-          SizedBox(width: ResponsiveHelper.wPixel(10)),
+          Icon(icon, color: Theme.of(context).colorScheme.onSurface),
+          SizedBox(width: 10.w),
           Text(
             text,
             style: TextStyle(
-              color: AppColors.whiteColor,
-              fontSize: ResponsiveHelper.wPixel(16),
-              height: ResponsiveHelper.hPixel(1.5),
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 16.w,
+              height: 1.5.h,
             ),
           ),
           Spacer(),
-          Icon(IconsaxPlusLinear.arrow_right_3, color: AppColors.whiteColor),
+          Icon(IconsaxPlusLinear.arrow_right_3, color: AppColors.brandPrimary),
         ],
       ),
     );

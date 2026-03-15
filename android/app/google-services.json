@@ -12,7 +12,20 @@
           "package_name": "com.example.task_tracker_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1038502543788-7m88td3uvfnbh6p7iv8qo7087rtuk5lh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.task_tracker_app",
+            "certificate_hash": "4ef9087c731d1416dba2c0b40fbfadaa356ef4b7"
+          }
+        },
+        {
+          "client_id": "1038502543788-9l0u4dk5tojq6olij6gaas4ckvkknjr2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC_YjalHit4llEoplz-YLbOXj3zHRfintU"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1038502543788-9l0u4dk5tojq6olij6gaas4ckvkknjr2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1038502543788-00r0vfvir9ted3fe39a8boaf6pc6s2if.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.taskTrackerApp"
+              }
+            }
+          ]
         }
       }
     }
