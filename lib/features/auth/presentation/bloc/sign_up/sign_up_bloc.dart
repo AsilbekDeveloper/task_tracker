@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:task_tracker_app/features/auth/domain/use_cases/sign_up_use_case.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/auth_event.dart';
 import 'sign_up_event.dart';
@@ -15,8 +16,18 @@ class SignUpBloc extends Bloc<AuthEvent, SignUpState> {
       SignUpEvent event,
       Emitter<SignUpState> emit,
       ) async {
+    if (event.email.isEmpty || event.password.isEmpty) {
+      emit(SignUpError("Fill email and password"));
+      return;
+    }
+
     if (event.password != event.confirmPassword) {
       emit(SignUpError("Passwords do not match"));
+      return;
+    }
+
+    if (event.password.length < 6) {
+      emit(SignUpError("Password must be at least 6 characters"));
       return;
     }
 
@@ -28,8 +39,27 @@ class SignUpBloc extends Bloc<AuthEvent, SignUpState> {
         password: event.password,
       );
       emit(SignUpSuccess(user));
+    } on FirebaseAuthException catch (e) {
+      emit(SignUpError(_mapFirebaseAuthError(e.code)));
     } catch (e) {
-      emit(SignUpError("Server error: ${e.toString()}"));
+      emit(SignUpError("Registration failed. Please try again."));
+    }
+  }
+
+  String _mapFirebaseAuthError(String code) {
+    switch (code) {
+      case 'email-already-in-use':
+        return 'An account already exists with this email.';
+      case 'invalid-email':
+        return 'Invalid email format.';
+      case 'weak-password':
+        return 'Password is too weak. Use at least 6 characters.';
+      case 'operation-not-allowed':
+        return 'Email/password sign-up is not enabled.';
+      case 'network-request-failed':
+        return 'Network error. Check your connection.';
+      default:
+        return 'Registration failed. Please try again.';
     }
   }
 }

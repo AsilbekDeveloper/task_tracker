@@ -45,7 +45,9 @@ Future<void> setup() async {
   // Registering Firebase services
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);
-  sl.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn());
+  sl.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn(
+    serverClientId: '1038502543788-9l0u4dk5tojq6olij6gaas4ckvkknjr2.apps.googleusercontent.com',
+  ));
 
   // RemoteDataSource
   sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(sl(), sl()));

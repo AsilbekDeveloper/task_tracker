@@ -2,12 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:task_tracker_app/app.dart';
 import 'package:task_tracker_app/core/di/service_locator.dart';
 import 'package:task_tracker_app/core/theme/theme_bloc.dart';
 import 'package:task_tracker_app/core/theme/theme_event.dart';
+import 'package:task_tracker_app/firebase_options.dart';
 
 import 'package:task_tracker_app/features/auth/presentation/bloc/sign_in/sign_in_bloc.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/sign_up/sign_up_bloc.dart';
@@ -29,9 +29,10 @@ import 'package:task_tracker_app/generated/strings.g.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await Hive.initFlutter();
-  GoogleSignIn();
   await setup();
   LocaleSettings.useDeviceLocale();
 

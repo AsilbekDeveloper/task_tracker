@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:task_tracker_app/features/auth/domain/use_cases/google_sign_in_use_case.dart';
 import 'package:task_tracker_app/features/categories/domain/use_cases/add_default_categories_use_case.dart';
@@ -24,18 +25,25 @@ class GoogleSignInBloc extends Bloc<GoogleSignInEvent, GoogleSignInState> {
       final user = await googleSignInUseCase();
 
       if (user == null) {
-        emit(const GoogleSignInError("Google Sign-In cancelled by user"));
+        emit(GoogleSignInInitial());
         return;
       }
-
-      await addDefaultCategoriesUseCase(user.uid);
 
       final box = await Hive.openBox('userBox');
       await box.put('uid', user.uid);
 
+      // Add default categories in background — don't block sign-in on failure
+      try {
+        await addDefaultCategoriesUseCase(user.uid);
+      } catch (_) {
+        // Non-critical: default categories can be added later
+      }
+
       emit(GoogleSignInSuccess());
-    } catch (e) {
-      emit(GoogleSignInError('Google Sign-In failed: ${e.toString()}'));
+    } catch (e, stackTrace) {
+      debugPrint('Google Sign-In error: $e');
+      debugPrint('Stack trace: $stackTrace');
+      emit(const GoogleSignInError('Google Sign-In failed. Please try again.'));
     }
   }
 }
