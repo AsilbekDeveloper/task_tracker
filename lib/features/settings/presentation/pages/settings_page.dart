@@ -29,7 +29,9 @@ class SettingsPage extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: Text(
           t.home.settings,
-          style: AppTextStyles.displayLarge.copyWith(color: Theme.of(context).colorScheme.onSurface),
+          style: AppTextStyles.headlineMedium.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
       ),
       body: SafeArea(
@@ -38,10 +40,11 @@ class SettingsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              /// ================= LANGUAGE =================
               Text(
-                "Select Language",
-                style: AppTextStyles.displayLarge.copyWith(color: Theme.of(context).colorScheme.onSurface)
+                t.settings.selectLanguage,
+                style: AppTextStyles.headlineMedium.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
               SizedBox(height: 16.h),
 
@@ -75,10 +78,11 @@ class SettingsPage extends StatelessWidget {
 
               SizedBox(height: 40.h),
 
-              /// ================= THEME =================
               Text(
-                "Theme",
-                style: AppTextStyles.displayLarge.copyWith(color: Theme.of(context).colorScheme.onSurface)
+                t.settings.theme,
+                style: AppTextStyles.headlineMedium.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
               SizedBox(height: 16.h),
 
@@ -90,19 +94,17 @@ class SettingsPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        isDark
-                            ? "DarkMode"
-                            : "LightMode",
-                        style: AppTextStyles.bodyLarge.copyWith(color: Theme.of(context).colorScheme.onSurface)
+                        isDark ? t.settings.darkMode : t.settings.lightMode,
+                        style: AppTextStyles.bodyLarge.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
                       Switch(
                         value: isDark,
                         onChanged: (value) {
                           context.read<ThemeBloc>().add(
                             ChangeThemeEvent(
-                              value
-                                  ? ThemeMode.dark
-                                  : ThemeMode.light,
+                              value ? ThemeMode.dark : ThemeMode.light,
                             ),
                           );
                         },
@@ -113,48 +115,48 @@ class SettingsPage extends StatelessWidget {
               ),
 
               SizedBox(height: 40.h),
-
-              /// ================= SIGN OUT =================
               BlocConsumer<SignOutBloc, SignOutState>(
                 listener: (context, state) {
                   if (state is SignOutSuccess) {
                     context.goNamed(RouteNames.signIn);
                   }
                   if (state is SignOutError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.message)),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(state.message)));
                   }
                 },
                 builder: (context, state) {
                   final isLoading = state is SignOutLoading;
 
                   return GestureDetector(
-                    onTap: isLoading
-                        ? null
-                        : () {
-                      context
-                          .read<SignOutBloc>()
-                          .add(SignOutEvent());
-                    },
+                    onTap:
+                        isLoading
+                            ? null
+                            : () {
+                              context.read<SignOutBloc>().add(SignOutEvent());
+                            },
                     child: Row(
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         isLoading
                             ? SizedBox(
-                          width: 20.w,
-                          height: 20.w,
-                          child: const CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
-                        )
+                              width: 20.w,
+                              height: 20.w,
+                              child: const CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            )
                             : Icon(
-                          IconsaxPlusLinear.logout,
-                          color: colorScheme.error,
-                        ),
+                              IconsaxPlusLinear.logout,
+                              color: colorScheme.error,
+                            ),
                         SizedBox(width: 10.w),
                         Text(
                           t.logout,
-                          style: AppTextStyles.bodyLarge.copyWith(color: Theme.of(context).colorScheme.error)
+                          style: AppTextStyles.bodyLarge.copyWith(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
                         ),
                       ],
                     ),
@@ -169,10 +171,10 @@ class SettingsPage extends StatelessWidget {
   }
 
   Widget _languageButton(
-      BuildContext context, {
-        required String label,
-        required AppLocale locale,
-      }) {
+    BuildContext context, {
+    required String label,
+    required AppLocale locale,
+  }) {
     final colorScheme = Theme.of(context).colorScheme;
     final isSelected = LocaleSettings.currentLocale == locale;
 
@@ -181,21 +183,15 @@ class SettingsPage extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 12.h),
         decoration: BoxDecoration(
-          color:
-          isSelected ? colorScheme.primary : Colors.transparent,
-          border: Border.all(
-            color: colorScheme.primary,
-            width: 1.5,
-          ),
+          color: isSelected ? colorScheme.primary : Colors.transparent,
+          border: Border.all(color: colorScheme.primary, width: 1.5),
           borderRadius: BorderRadius.circular(8.r),
         ),
         child: Center(
           child: Text(
             label,
             style: TextStyle(
-              color: isSelected
-                  ? colorScheme.onPrimary
-                  : colorScheme.onSurface,
+              color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,
             ),

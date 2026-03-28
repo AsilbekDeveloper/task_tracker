@@ -4,6 +4,7 @@ import 'package:task_tracker_app/features/home/data/models/task_model.dart';
 import 'package:task_tracker_app/features/home/data/models/task_list_model.dart';
 import 'package:task_tracker_app/features/home/domain/entities/task_entity.dart';
 import 'package:task_tracker_app/features/home/domain/entities/task_list_entity.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 abstract class TaskRemoteDataSource {
   Future<TaskListEntity> getAllTasks({required String userId});
@@ -51,7 +52,7 @@ class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
       );
     } catch (e) {
       logger.e("Error creating task: $e");
-      throw Exception("Vazifa yaratishda xatolik: $e");
+      throw Exception("${t.errors.failedToCreateTask} $e");
     }
   }
 
@@ -74,7 +75,7 @@ class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
       return TaskListModel(allTasks: tasks);
     } catch (e) {
       logger.e("Error fetching tasks: $e");
-      throw Exception("Vazifalarni olishda xatolik: $e");
+      throw Exception("${t.errors.fetchTasksError} $e");
     }
   }
 
@@ -85,7 +86,7 @@ class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
       logger.i("Task deleted successfully with id: $taskId");
     } catch (e) {
       logger.e("Error deleting task: $e");
-      throw Exception("Vazifani o'chirishda xatolik: $e");
+      throw Exception("${t.errors.deleteTaskError} $e");
     }
   }
 
@@ -108,7 +109,7 @@ class TaskRemoteDataSourceImpl implements TaskRemoteDataSource {
       return taskEntity;
     } catch (e) {
       logger.e("Error updating task: $e");
-      throw Exception("Vazifani yangilashda xatolik: $e");
+      throw Exception("${t.errors.failedToUpdateTask} $e");
     }
   }
 

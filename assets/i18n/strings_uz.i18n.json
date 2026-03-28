@@ -1,7 +1,7 @@
 {
   "auth": {
     "signIn": "Kirish",
-    "signUp": "Ro‘yxatdan o‘tish",
+    "signUp": "Ro'yxatdan o'tish",
     "email": "Email",
     "password": "Parol",
     "confirmPassword": "Parolni tasdiqlash",
@@ -12,12 +12,17 @@
     "username": "Foydalanuvchi nomi",
     "or": "yoki",
     "loginGoogle": "Google bilan kirish",
-    "registerGoogle": "Google bilan ro‘yxatdan o‘tish",
+    "registerGoogle": "Google bilan ro'yxatdan o'tish",
     "loginApple": "Apple bilan kirish",
-    "dontHaveAccount": "Akkountingiz yo‘qmi?",
+    "dontHaveAccount": "Akkountingiz yo'qmi?",
     "alreadyHaveAccount": "Akkountingiz allaqachon mavjud?",
-    "register": "Ro‘yxatdan o‘tish",
-    "userNotLoggedIn": "Foydalanuvchi tizimga kirgan emas"
+    "register": "Ro'yxatdan o'tish",
+    "userNotLoggedIn": "Foydalanuvchi tizimga kirgan emas",
+    "fillEmailAndPassword": "Email va parolni kiriting",
+    "googleSignInCancelled": "Google orqali kirish bekor qilindi",
+    "passwordsDoNotMatch": "Parollar mos kelmaydi",
+    "invalidEmail": "Noto'g'ri email manzil",
+    "passwordTooShort": "Parol kamida 6 ta belgidan iborat bo'lishi kerak"
   },
   "category": {
     "createNewCategory": "Yangi kategoriya yaratish",
@@ -33,16 +38,17 @@
     "categoryLoadFailed": "Kategoriyalar yuklanmadi",
     "noCategoriesAvailable": "Kategoriya mavjud emas.",
     "errorLoadingCategories": "Kategoriyalarni yuklashda xatolik",
-    "changeIcon": "Ikonkani o‘zgartirish",
-    "fillAllFields": "Iltimos, barcha maydonlarni to‘ldiring",
+    "changeIcon": "Ikonkani o'zgartirish",
+    "fillAllFields": "Iltimos, barcha maydonlarni to'ldiring",
     "categoryCreatedSuccess": "Kategoriya muvaffaqiyatli yaratildi!",
     "categoryNotFound": "Kategoriya topilmadi",
-    "tasksExistInCategory": "Bu kategoriyada topshiriqlar mavjud!"
+    "tasksExistInCategory": "Bu kategoriyada topshiriqlar mavjud!",
+    "chooseAnIcon": "Ikonka tanlang"
   },
   "home": {
     "whatWant": "Bugun nima qilmoqchisiz?",
-    "addTasks": "Vazifalarni qo‘shish uchun + tugmasini bosing",
-    "tasksList": "Vazifalar ro‘yxati",
+    "addTasks": "Vazifalarni qo'shish uchun + tugmasini bosing",
+    "tasksList": "Vazifalar ro'yxati",
     "incomplete": "Tugallanmagan",
     "completed": "Tugallangan",
     "home": "Bosh sahifa",
@@ -50,8 +56,9 @@
     "category": "Kategoriya",
     "settings": "Sozlamalar",
     "tasksNotDownloaded": "Vazifalar yuklanmadi",
-    "noTasksAvailable": "Vazifalar yo‘q",
-    "errorLoadingTasks": "Xatolik yuz berdi"
+    "noTasksAvailable": "Vazifalar yo'q",
+    "errorLoadingTasks": "Xatolik yuz berdi",
+    "noName": "Nomi yo'q"
   },
   "task": {
     "taskTitle": "Vazifa nomi",
@@ -64,21 +71,67 @@
     "enterTaskDesc": "Vazifa tavsifini kiriting",
     "save": "Saqlash",
     "priority": "Ustuvorlik",
-    "addTask": "Vazifa qo‘shish",
+    "addTask": "Vazifa qo'shish",
     "createTask": "Vazifa yaratish",
     "creating": "Yaratilmoqda...",
     "select": "Tanlash",
     "taskCreatedSuccess": "Vazifa muvaffaqiyatli yaratildi!",
     "taskEditedSuccessfully": "Vazifa muvaffaqiyatli tahrirlandi",
     "loading": "Yuklanmoqda...",
-    "selectPriority": "Prioritetni tanlang"
+    "selectPriority": "Prioritetni tanlang",
+    "fillRequiredFields": "Iltimos, barcha maydonlarni to'ldiring",
+    "titleRequired": "Vazifa nomi majburiy",
+    "descriptionRequired": "Vazifa tavsifi majburiy",
+    "selectCategory": "Iltimos, kategoriya tanlang",
+    "selectPriorityRequired": "Iltimos, ustuvorlik tanlang",
+    "selectEndTime": "Iltimos, tugash vaqtini tanlang",
+    "notAuthenticated": "Foydalanuvchi tasdiqlanmagan. Iltimos, qayta kiring",
+    "unknown": "Noma'lum"
   },
   "calendar": {
     "calendar": "Kalendar",
     "errorLoadingTasks": "Vazifalarni yuklashda xatolik",
     "tryAgain": "Qayta urinish",
-    "noTasksForDate": "Bu sana uchun vazifalar yo‘q",
+    "noTasksForDate": "Bu sana uchun vazifalar yo'q",
     "tasksCompleted": "{total} ta vazifadan {completed} tasi bajarildi"
+  },
+  "settings": {
+    "selectLanguage": "Tilni tanlash",
+    "theme": "Mavzu",
+    "darkMode": "Tungi rejim",
+    "lightMode": "Kunduzgi rejim"
+  },
+  "errors": {
+    "signOutError": "Chiqishda xatolik:",
+    "serverError": "Server xatoligi:",
+    "googleSignInFailed": "Google orqali kirishda xatolik:",
+    "userIdEmpty": "UserId bo'sh bo'lishi mumkin emas",
+    "fetchCategoriesError": "Kategoriya ro'yxatini olishda xatolik:",
+    "createCategoryError": "Kategoriya yaratishda xatolik:",
+    "createDefaultCategoryError": "Default kategoriya yaratishda xato:",
+    "deleteCategoryError": "Kategoriya o'chirishda xato yuz berdi:",
+    "updateDataError": "Ma'lumotlarni yangilashda xatolik:",
+    "userNotLogged": "Foydalanuvchi tizimga kirmagan",
+    "createTaskError": "Vazifa yaratishda xatolik:",
+    "fetchTasksError": "Vazifalarni olishda xatolik:",
+    "deleteTaskError": "Vazifani o'chirishda xatolik:",
+    "failedToCreateTask": "Vazifa yaratib bo'lmadi:",
+    "failedToUpdateTask": "Vazifani yangilab bo'lmadi:",
+    "unknownError": "Xatolik yuz berdi. Qayta urinib ko'ring",
+    "userNotFound": "Akkaunt topilmadi. Ro'yxatdan o'ting",
+    "wrongPassword": "Parol noto'g'ri",
+    "invalidEmailFormat": "Email formati noto'g'ri",
+    "userDisabled": "Bu akkaunt bloklangan",
+    "tooManyRequests": "Juda ko'p urinish. Keyinroq urinib ko'ring",
+    "networkError": "Internet aloqasi yo'q",
+    "invalidCredentials": "Email yoki parol noto'g'ri",
+    "error": "Xatolik"
+  },
+  "navigation": {
+    "home": "Bosh sahifa",
+    "calendar": "Kalendar",
+    "category": "Kategoriya",
+    "settings": "Sozlamalar"
   },
 
   "logout": "Chiqish"

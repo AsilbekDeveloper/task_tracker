@@ -16,7 +16,7 @@ class MainButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textStyle = Theme.of(context).textTheme.bodyLarge;
+    final textTheme = Theme.of(context).textTheme;
 
     return SizedBox(
       width: double.infinity,
@@ -32,7 +32,7 @@ class MainButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.r),
           ),
           padding: EdgeInsets.symmetric(vertical: 14.h),
-          textStyle: textStyle?.copyWith(
+          textStyle: textTheme.bodyLarge?.copyWith(
             fontWeight: FontWeight.w600,
           ),
         ),

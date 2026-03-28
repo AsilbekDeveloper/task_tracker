@@ -4,6 +4,7 @@ import 'package:task_tracker_app/features/categories/domain/use_cases/create_cat
 import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/create_category/create_category_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/create_category/create_category_state.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class CreateCategoryBloc
     extends Bloc<CategoriesEvent, CreateCategoryState> {
@@ -20,7 +21,7 @@ class CreateCategoryBloc
     try {
       final user = auth.currentUser;
       if(user == null) {
-        emit(CreateCategoryError("User not logged in"));
+        emit(CreateCategoryError(t.auth.userNotLoggedIn));
         return;
       }
 
@@ -33,7 +34,7 @@ class CreateCategoryBloc
 
       emit(CreateCategorySuccess(newCategory));
     } catch (e) {
-      emit(CreateCategoryError("Server error: ${e.toString()}"));
+      emit(CreateCategoryError("${t.errors.serverError} ${e.toString()}"));
     }
   }
 }

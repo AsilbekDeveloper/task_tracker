@@ -4,6 +4,7 @@ import 'package:task_tracker_app/features/home/domain/use_cases/get_all_tasks_us
 import 'package:task_tracker_app/features/home/presentation/bloc/get_all_tasks/get_all_tasks_event.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/get_all_tasks/get_all_tasks_state.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/task_event.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class GetAllTasksBloc extends Bloc<TaskEvent, GetAllTasksState> {
   final GetAllTasksUseCase getAllTasksUseCase;
@@ -31,7 +32,7 @@ class GetAllTasksBloc extends Bloc<TaskEvent, GetAllTasksState> {
       emit(GetAllTasksSuccess(sortedTaskListEntity));
 
     } catch (e) {
-      emit(GetAllTasksError("Server error: ${e.toString()}"));
+      emit(GetAllTasksError("${t.errors.serverError} ${e.toString()}"));
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:task_tracker_app/features/auth/domain/use_cases/sign_up_use_case.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/auth_event.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 import 'sign_up_event.dart';
 import 'sign_up_state.dart';
 
@@ -16,7 +17,7 @@ class SignUpBloc extends Bloc<AuthEvent, SignUpState> {
       Emitter<SignUpState> emit,
       ) async {
     if (event.password != event.confirmPassword) {
-      emit(SignUpError("Passwords do not match"));
+      emit(SignUpError(t.auth.passwordsDoNotMatch));
       return;
     }
 
@@ -29,7 +30,7 @@ class SignUpBloc extends Bloc<AuthEvent, SignUpState> {
       );
       emit(SignUpSuccess(user));
     } catch (e) {
-      emit(SignUpError("Server error: ${e.toString()}"));
+      emit(SignUpError("${t.errors.serverError} ${e.toString()}"));
     }
   }
 }

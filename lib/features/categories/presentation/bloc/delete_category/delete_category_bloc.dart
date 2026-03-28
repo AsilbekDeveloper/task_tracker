@@ -4,6 +4,7 @@ import 'package:task_tracker_app/features/categories/domain/use_cases/delete_cat
 import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/delete_category/delete_category_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/delete_category/delete_category_state.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class DeleteCategoryBloc extends Bloc<CategoriesEvent, DeleteCategoryState> {
   final DeleteCategoryUseCase deleteCategoryUseCase;
@@ -19,7 +20,7 @@ class DeleteCategoryBloc extends Bloc<CategoriesEvent, DeleteCategoryState> {
     try {
       final user = auth.currentUser;
       if (user == null) {
-        emit(const DeleteCategoryError("User not logged in"));
+        emit(DeleteCategoryError(t.auth.userNotLoggedIn));
         return;
       }
 
@@ -27,7 +28,7 @@ class DeleteCategoryBloc extends Bloc<CategoriesEvent, DeleteCategoryState> {
 
       emit(DeleteCategorySuccess(event.categoryId));
     } catch (e) {
-      emit(DeleteCategoryError("Server error: ${e.toString()}"));
+      emit(DeleteCategoryError("${t.errors.serverError} ${e.toString()}"));
     }
   }
 }

@@ -14,10 +14,15 @@
     "loginGoogle": "Login with Google",
     "registerGoogle": "Register with Google",
     "loginApple": "Login with Apple",
-    "dontHaveAccount": "Don’t have an account?",
+    "dontHaveAccount": "Don't have an account?",
     "alreadyHaveAccount": "Already have an account?",
     "register": "Register",
-    "userNotLoggedIn": "User is not logged in"
+    "userNotLoggedIn": "User is not logged in",
+    "fillEmailAndPassword": "Fill email and password",
+    "googleSignInCancelled": "Google Sign-In cancelled by user",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "invalidEmail": "Invalid email address",
+    "passwordTooShort": "Password must be at least 6 characters"
   },
   "category": {
     "createNewCategory": "Create new category",
@@ -37,7 +42,8 @@
     "fillAllFields": "Please fill all fields",
     "categoryCreatedSuccess": "Category successfully created!",
     "categoryNotFound": "Category not found",
-    "tasksExistInCategory": "There are tasks in this category"
+    "tasksExistInCategory": "There are tasks in this category",
+    "chooseAnIcon": "Choose an Icon"
   },
   "home": {
     "whatWant": "What do you want to do today?",
@@ -51,7 +57,8 @@
     "settings": "Settings",
     "tasksNotDownloaded": "Tasks not downloaded",
     "noTasksAvailable": "No tasks available",
-    "errorLoadingTasks": "Error occurred"
+    "errorLoadingTasks": "Error occurred",
+    "noName": "No name"
   },
   "task": {
     "taskTitle": "Task Title",
@@ -71,7 +78,15 @@
     "taskCreatedSuccess": "Task successfully created!",
     "taskEditedSuccessfully": "Task edited successfully",
     "loading": "Loading...",
-    "selectPriority": "Select priority"
+    "selectPriority": "Select priority",
+    "fillRequiredFields": "Please fill required fields",
+    "titleRequired": "Task title is required",
+    "descriptionRequired": "Task description is required",
+    "selectCategory": "Please select a category",
+    "selectPriorityRequired": "Please select a priority",
+    "selectEndTime": "Please select end time",
+    "notAuthenticated": "User not authenticated. Please login again",
+    "unknown": "Unknown"
   },
   "calendar": {
     "calendar": "Calendar",
@@ -80,5 +95,44 @@
     "noTasksForDate": "No tasks for this date",
     "tasksCompleted": "{completed} of {total} tasks completed"
   },
+  "settings": {
+    "selectLanguage": "Select Language",
+    "theme": "Theme",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode"
+  },
+  "errors": {
+    "signOutError": "Sign out error:",
+    "serverError": "Server error:",
+    "googleSignInFailed": "Google Sign-In failed:",
+    "userIdEmpty": "UserId cannot be empty",
+    "fetchCategoriesError": "Error fetching category list:",
+    "createCategoryError": "Error creating category:",
+    "createDefaultCategoryError": "Error creating default category:",
+    "deleteCategoryError": "Error deleting category:",
+    "updateDataError": "Error updating data:",
+    "userNotLogged": "User not logged",
+    "createTaskError": "Error creating task:",
+    "fetchTasksError": "Error fetching tasks:",
+    "deleteTaskError": "Error deleting task:",
+    "failedToCreateTask": "Failed to create task:",
+    "failedToUpdateTask": "Failed to update task:",
+    "unknownError": "Something went wrong. Please try again",
+    "userNotFound": "Account not found. Please sign up",
+    "wrongPassword": "Incorrect password",
+    "invalidEmailFormat": "Invalid email format",
+    "userDisabled": "This account has been disabled",
+    "tooManyRequests": "Too many attempts. Please try again later",
+    "networkError": "No internet connection",
+    "invalidCredentials": "Email or password is incorrect",
+    "error": "Error:"
+  },
+  "navigation": {
+    "home": "Home",
+    "calendar": "Calendar",
+    "category": "Category",
+    "settings": "Settings"
+  },
+
   "logout": "Log out"
 }

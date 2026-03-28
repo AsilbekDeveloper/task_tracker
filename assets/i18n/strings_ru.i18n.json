@@ -17,7 +17,12 @@
     "dontHaveAccount": "Нет аккаунта?",
     "alreadyHaveAccount": "Уже есть аккаунт?",
     "register": "Регистрация",
-    "userNotLoggedIn": "Пользователь не вошёл в систему"
+    "userNotLoggedIn": "Пользователь не вошёл в систему",
+    "fillEmailAndPassword": "Введите email и пароль",
+    "googleSignInCancelled": "Вход через Google отменён пользователем",
+    "passwordsDoNotMatch": "Пароли не совпадают",
+    "invalidEmail": "Неверный адрес электронной почты",
+    "passwordTooShort": "Пароль должен содержать не менее 6 символов"
   },
   "category": {
     "createNewCategory": "Создать новую категорию",
@@ -37,7 +42,8 @@
     "fillAllFields": "Пожалуйста, заполните все поля",
     "categoryCreatedSuccess": "Категория успешно создана!",
     "categoryNotFound": "Категория не найдена",
-    "tasksExistInCategory": "В этой категории есть задачи"
+    "tasksExistInCategory": "В этой категории есть задачи",
+    "chooseAnIcon": "Выберите иконку"
   },
   "home": {
     "whatWant": "Что вы хотите сделать сегодня?",
@@ -51,7 +57,8 @@
     "settings": "Настройки",
     "tasksNotDownloaded": "Задачи не загружены",
     "noTasksAvailable": "Нет задач",
-    "errorLoadingTasks": "Произошла ошибка"
+    "errorLoadingTasks": "Произошла ошибка",
+    "noName": "Без имени"
   },
   "task": {
     "taskTitle": "Название задачи",
@@ -71,7 +78,15 @@
     "taskCreatedSuccess": "Задача успешно создана!",
     "taskEditedSuccessfully": "Задача успешно отредактирована",
     "loading": "Загрузка...",
-    "selectPriority": "Выбрать приоритет"
+    "selectPriority": "Выбрать приоритет",
+    "fillRequiredFields": "Пожалуйста, заполните все поля",
+    "titleRequired": "Название задачи обязательно",
+    "descriptionRequired": "Описание задачи обязательно",
+    "selectCategory": "Пожалуйста, выберите категорию",
+    "selectPriorityRequired": "Пожалуйста, выберите приоритет",
+    "selectEndTime": "Пожалуйста, выберите время окончания",
+    "notAuthenticated": "Пользователь не авторизован. Пожалуйста, войдите снова",
+    "unknown": "Неизвестно"
   },
   "calendar": {
     "calendar": "Календарь",
@@ -79,6 +94,44 @@
     "tryAgain": "Попробовать снова",
     "noTasksForDate": "На эту дату задач нет",
     "tasksCompleted": "Выполнено {completed} из {total} задач"
+  },
+  "settings": {
+    "selectLanguage": "Выбрать язык",
+    "theme": "Тема",
+    "darkMode": "Тёмный режим",
+    "lightMode": "Светлый режим"
+  },
+  "errors": {
+    "signOutError": "Ошибка выхода:",
+    "serverError": "Ошибка сервера:",
+    "googleSignInFailed": "Ошибка входа через Google:",
+    "userIdEmpty": "UserId не может быть пустым",
+    "fetchCategoriesError": "Ошибка получения списка категорий:",
+    "createCategoryError": "Ошибка создания категории:",
+    "createDefaultCategoryError": "Ошибка создания категории по умолчанию:",
+    "deleteCategoryError": "Ошибка удаления категории:",
+    "updateDataError": "Ошибка обновления данных:",
+    "userNotLogged": "Пользователь не вошёл в систему",
+    "createTaskError": "Ошибка создания задачи:",
+    "fetchTasksError": "Ошибка получения задач:",
+    "deleteTaskError": "Ошибка удаления задачи:",
+    "failedToCreateTask": "Не удалось создать задачу:",
+    "failedToUpdateTask": "Не удалось обновить задачу:",
+    "unknownError": "Произошла ошибка. Попробуйте снова",
+    "userNotFound": "Аккаунт не найден. Зарегистрируйтесь",
+    "wrongPassword": "Неверный пароль",
+    "invalidEmailFormat": "Неверный формат email",
+    "userDisabled": "Этот аккаунт заблокирован",
+    "tooManyRequests": "Слишком много попыток. Попробуйте позже",
+    "networkError": "Нет подключения к интернету",
+    "invalidCredentials": "Неверный email или пароль",
+    "error": "Ошибка"
+  },
+  "navigation": {
+    "home": "Главная",
+    "calendar": "Календарь",
+    "category": "Категория",
+    "settings": "Настройки"
   },
 
   "logout": "Выйти"

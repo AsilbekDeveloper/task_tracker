@@ -49,7 +49,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         CategoryModel(
           iconCode: Icons.question_mark.codePoint,
           categoryId: '',
-          categoryName: 'Unknown',
+          categoryName: t.task.unknown,
           userId: '',
           color: 0xFF000000,
         );
@@ -104,7 +104,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         ),
         title: Text(
           t.task.editTask,
-          style: AppTextStyles.displayLarge.copyWith(
+          style: AppTextStyles.headlineMedium.copyWith(
             color: colorScheme.onSurface,
           ),
         ),
@@ -146,7 +146,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
               children: [
                 SizedBox(height: 10.h),
 
-                // Task title
+                /// Task title
                 Text(
                   t.task.enterTaskTitle,
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -161,7 +161,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
                 SizedBox(height: 20.h),
 
-                // Task description
+                /// Task description
                 Text(
                   t.task.enterTaskDesc,
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -176,7 +176,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
                 SizedBox(height: 30.h),
 
-                // Task time
+                /// Task time
                 Row(
                   children: [
                     Icon(
@@ -201,7 +201,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
                 SizedBox(height: 25.h),
 
-                // Category picker
+                /// Category picker
                 Row(
                   children: [
                     Icon(
@@ -251,7 +251,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
                 SizedBox(height: 25.h),
 
-                // Priority picker
+                /// Priority picker
                 Row(
                   children: [
                     Icon(
@@ -290,7 +290,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
                 SizedBox(height: 250.h),
 
-                // Save button
+                /// Save button
                 MainButton(
                   text:
                       state is EditTaskLoading

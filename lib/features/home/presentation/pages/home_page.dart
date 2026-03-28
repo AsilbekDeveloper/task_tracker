@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_tracker_app/core/app_images_icons/app_images.dart';
+import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_bloc.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_event.dart';
@@ -45,7 +46,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
-    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return DefaultTabController(
       length: 2,
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.message),
-                    backgroundColor: theme.colorScheme.error,
+                    backgroundColor: colorScheme.error,
                   ),
                 );
               }
@@ -72,19 +73,18 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         child: Scaffold(
-          backgroundColor: theme.colorScheme.surface,
+          backgroundColor: colorScheme.surface,
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(kToolbarHeight),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: AppBar(
-                backgroundColor: theme.colorScheme.surface,
+                backgroundColor: colorScheme.surface,
                 elevation: 0,
                 centerTitle: true,
                 title: Text(
                   t.home.tasksList,
-                  style: theme.textTheme.titleMedium
-                      ?.copyWith(color: theme.colorScheme.onSurface),
+                  style: AppTextStyles.headlineMedium.copyWith(color: colorScheme.onSurface),
                 ),
               ),
             ),
@@ -95,11 +95,12 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TabBar(
-                  indicatorColor: theme.colorScheme.primary,
+                  indicatorColor: colorScheme.primary,
                   indicatorWeight: 3,
-                  labelColor: theme.colorScheme.onSurface,
-                  unselectedLabelColor:
-                  theme.colorScheme.onSurface.withOpacity(0.5),
+                  labelColor: colorScheme.onSurface,
+                  unselectedLabelColor: colorScheme.onSurface.withOpacity(
+                    0.5,
+                  ),
                   labelStyle: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
@@ -129,6 +130,7 @@ class _HomePageState extends State<HomePage> {
 
 class _TaskListView extends StatelessWidget {
   final bool isCompleted;
+
   const _TaskListView({required this.isCompleted});
 
   @override
@@ -140,17 +142,16 @@ class _TaskListView extends StatelessWidget {
       builder: (context, categoryState) {
         if (categoryState is CategoryListLoading) {
           return Center(
-            child: CircularProgressIndicator(
-              color: theme.colorScheme.primary,
-            ),
+            child: CircularProgressIndicator(color: theme.colorScheme.primary),
           );
         }
         if (categoryState is CategoryListError) {
           return Center(
             child: Text(
               t.category.categoryLoadFailed,
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(color: theme.colorScheme.onSurface),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface,
+              ),
             ),
           );
         }
@@ -170,38 +171,38 @@ class _TaskListView extends StatelessWidget {
                 return Center(
                   child: Text(
                     taskState.errorMessage,
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(color: theme.colorScheme.onSurface),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurface,
+                    ),
                   ),
                 );
               }
               if (taskState is GetAllTasksSuccess) {
-                final filteredTasks = taskState.tasks.allTasks
-                    .where((task) => task.isCompleted == isCompleted)
-                    .toList();
+                final filteredTasks =
+                    taskState.tasks.allTasks
+                        .where((task) => task.isCompleted == isCompleted)
+                        .toList();
 
                 if (filteredTasks.isEmpty) {
                   return Center(
                     child: Column(
                       children: [
                         SizedBox(height: 100.h),
-                        Image.asset(
-                          AppImages.checklist,
-                          color: theme.colorScheme.onSurface.withOpacity(0.7),
-                        ),
+                        Image.asset(AppImages.checklist),
                         SizedBox(height: 16.h),
                         Text(
+                          textAlign: TextAlign.center,
                           t.home.whatWant,
-                          style: theme.textTheme.headlineSmall
-                              ?.copyWith(color: theme.colorScheme.onSurface),
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            color: theme.colorScheme.onSurface,
+                          ),
                         ),
                         SizedBox(height: 8.h),
                         Text(
                           t.home.addTasks,
-                          style: theme.textTheme.bodyMedium
-                              ?.copyWith(
-                              color: theme.colorScheme.onSurface
-                                  .withOpacity(0.7)),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurface.withOpacity(0.7),
+                          ),
                         ),
                       ],
                     ),
@@ -217,12 +218,12 @@ class _TaskListView extends StatelessWidget {
                     CategoryEntity taskCategory;
                     try {
                       taskCategory = categories.firstWhere(
-                            (cat) => cat.categoryId == task.categoryId,
+                        (cat) => cat.categoryId == task.categoryId,
                       );
                     } catch (e) {
                       taskCategory = CategoryEntity(
-                        categoryId: 'unknown',
-                        categoryName: 'Unknown',
+                        categoryId: t.task.unknown,
+                        categoryName: t.task.unknown,
                         userId: '',
                         color: 0xFF9E9E9E,
                         iconCode: 0xe3af,
@@ -233,8 +234,10 @@ class _TaskListView extends StatelessWidget {
                       dateTime: task.dateTime,
                       categoryName: taskCategory.categoryName,
                       categoryColor: Color(taskCategory.color),
-                      icon: IconData(taskCategory.iconCode,
-                          fontFamily: 'MaterialIcons'),
+                      icon: IconData(
+                        taskCategory.iconCode,
+                        fontFamily: 'MaterialIcons',
+                      ),
                       priority: task.priority.toString(),
                       value: task.isCompleted,
                       onChanged: (value) {

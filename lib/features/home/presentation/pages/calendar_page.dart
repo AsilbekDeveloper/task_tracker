@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import "package:intl/intl.dart" show DateFormat;
+import 'package:intl/intl.dart';
 import 'package:task_tracker_app/core/app_images_icons/app_images.dart';
 import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/generated/strings.g.dart';
@@ -52,7 +52,6 @@ class _CalendarPageState extends State<CalendarPage> {
     if (user == null) return;
 
     context.read<GetAllTasksBloc>().add(GetAllTasksEvent(userId: user.uid));
-
     context.read<CategoryListBloc>().add(LoadCategories());
   }
 
@@ -62,6 +61,7 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     final t = Translations.of(context);
     final theme = Theme.of(context);
+    final locale = Localizations.localeOf(context).languageCode; // ilova tilini olish
 
     return MultiBlocListener(
       listeners: [
@@ -86,9 +86,8 @@ class _CalendarPageState extends State<CalendarPage> {
               elevation: 0,
               title: Text(
                 t.calendar.calendar,
-                style: theme.textTheme.titleMedium?.copyWith(
+                style: theme.textTheme.headlineMedium?.copyWith(
                   color: theme.colorScheme.onSurface,
-                  fontWeight: FontWeight.w600,
                 ),
               ),
               centerTitle: true,
@@ -97,7 +96,7 @@ class _CalendarPageState extends State<CalendarPage> {
         ),
         body: Column(
           children: [
-            _buildHorizontalCalendar(theme),
+            _buildHorizontalCalendar(theme, locale),
             Divider(
               color: theme.colorScheme.onSurface.withOpacity(0.1),
               height: 1,
@@ -110,27 +109,28 @@ class _CalendarPageState extends State<CalendarPage> {
                       child: CircularProgressIndicator(),
                     ),
                     CategoryListSuccess() =>
-                      BlocBuilder<GetAllTasksBloc, GetAllTasksState>(
-                        builder: (context, taskState) {
-                          return switch (taskState) {
-                            GetAllTasksLoading() => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            GetAllTasksSuccess() => _buildTasksContent(
-                              taskState.tasks.allTasks,
-                              categoryState.categoryList.categoryList,
-                              theme,
-                            ),
-                            GetAllTasksError() => _buildErrorState(
-                              taskState.errorMessage,
-                              theme,
-                            ),
-                            _ => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          };
-                        },
-                      ),
+                        BlocBuilder<GetAllTasksBloc, GetAllTasksState>(
+                          builder: (context, taskState) {
+                            return switch (taskState) {
+                              GetAllTasksLoading() => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              GetAllTasksSuccess() => _buildTasksContent(
+                                taskState.tasks.allTasks,
+                                categoryState.categoryList.categoryList,
+                                theme,
+                                locale,
+                              ),
+                              GetAllTasksError() => _buildErrorState(
+                                taskState.errorMessage,
+                                theme,
+                              ),
+                              _ => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            };
+                          },
+                        ),
                     CategoryListError() => _buildErrorState(
                       t.calendar.errorLoadingTasks,
                       theme,
@@ -146,10 +146,12 @@ class _CalendarPageState extends State<CalendarPage> {
     );
   }
 
-  Widget _buildHorizontalCalendar(ThemeData theme) {
+  Widget _buildHorizontalCalendar(ThemeData theme, String locale) {
+    final cs = theme.colorScheme;
+
     final dates = List.generate(
       _daysToShow,
-      (index) => DateTime.now().add(Duration(days: index)),
+          (index) => DateTime.now().add(Duration(days: index)),
     );
 
     return SizedBox(
@@ -165,43 +167,71 @@ class _CalendarPageState extends State<CalendarPage> {
           final isSelected = _isSameDay(date, _selectedDate);
           final isToday = _isSameDay(date, DateTime.now());
 
+          final Color bgColor;
+          final Color textColor;
+          final Color subTextColor;
+          final Border? border;
+
+          if (isSelected) {
+            bgColor = cs.primary;
+            textColor = cs.onPrimary;
+            subTextColor = cs.onPrimary.withOpacity(0.8);
+            border = null;
+          } else if (isToday) {
+            bgColor = cs.primary.withOpacity(0.12);
+            textColor = cs.primary;
+            subTextColor = cs.primary.withOpacity(0.8);
+            border = Border.all(
+              color: cs.primary.withOpacity(0.3),
+              width: 1,
+            );
+          } else {
+            bgColor = cs.surface;
+            textColor = cs.onSurface;
+            subTextColor = cs.onSurface.withOpacity(0.5);
+            border = Border.all(
+              color: cs.onSurface.withOpacity(0.12),
+              width: 1,
+            );
+          }
+
           return GestureDetector(
             onTap: () => setState(() => _selectedDate = date),
             child: Container(
               width: 70.w,
               padding: EdgeInsets.symmetric(vertical: 8.h),
               decoration: BoxDecoration(
-                color:
-                    isSelected
-                        ? theme.colorScheme.primary
-                        : isToday
-                        ? theme.colorScheme.primary.withOpacity(0.2)
-                        : theme.colorScheme.surface,
+                color: bgColor,
                 borderRadius: BorderRadius.circular(12.r),
+                border: border,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    DateFormat('MMM').format(date).toUpperCase(),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurface,
+                    DateFormat('MMM', locale).format(date).toUpperCase(),
+                    style: TextStyle(
                       fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                      color: textColor,
                     ),
                   ),
+                  SizedBox(height: 2.h),
                   Text(
                     '${date.day}',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface,
+                    style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
+                      color: textColor,
                     ),
                   ),
+                  SizedBox(height: 2.h),
                   Text(
-                    DateFormat('EEE').format(date).toUpperCase(),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    DateFormat('EEE', locale).format(date).toUpperCase(),
+                    style: TextStyle(
                       fontSize: 11.sp,
+                      fontWeight: FontWeight.w400,
+                      color: subTextColor,
                     ),
                   ),
                 ],
@@ -214,15 +244,16 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   Widget _buildTasksContent(
-    List<TaskEntity> tasks,
-    List<CategoryEntity> categories,
-    ThemeData theme,
-  ) {
+      List<TaskEntity> tasks,
+      List<CategoryEntity> categories,
+      ThemeData theme,
+      String locale,
+      ) {
     final t = Translations.of(context);
 
     final filtered =
-        tasks.where((task) => _isSameDay(task.dateTime, _selectedDate)).toList()
-          ..sort((a, b) => a.priority.compareTo(b.priority));
+    tasks.where((task) => _isSameDay(task.dateTime, _selectedDate)).toList()
+      ..sort((a, b) => a.priority.compareTo(b.priority));
 
     if (filtered.isEmpty) return _buildEmptyState(theme);
 
@@ -238,7 +269,7 @@ class _CalendarPageState extends State<CalendarPage> {
         children: [
           SizedBox(height: 16.h),
           Text(
-            DateFormat('EEEE, MMMM d').format(_selectedDate),
+            DateFormat('EEEE, MMMM d', locale).format(_selectedDate),
             style: theme.textTheme.titleMedium?.copyWith(
               color: theme.colorScheme.onSurface,
               fontWeight: FontWeight.w600,
@@ -261,7 +292,7 @@ class _CalendarPageState extends State<CalendarPage> {
               itemBuilder: (context, index) {
                 final task = filtered[index];
                 final category = categories.firstWhere(
-                  (c) => c.categoryId == task.categoryId,
+                      (c) => c.categoryId == task.categoryId,
                 );
 
                 return TaskWidget(

@@ -4,6 +4,7 @@ import 'package:task_tracker_app/features/categories/domain/use_cases/categories
 import 'package:task_tracker_app/features/categories/presentation/bloc/categories_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_state.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class CategoryListBloc extends Bloc<CategoriesEvent, CategoryListState> {
   final CategoryListUseCase categoryListUseCase;
@@ -21,7 +22,7 @@ class CategoryListBloc extends Bloc<CategoriesEvent, CategoryListState> {
     try {
       final user = auth.currentUser;
       if(user == null) {
-        emit(const CategoryListError("User not logged"));
+        emit(CategoryListError(t.auth.userNotLoggedIn));
         return;
       }
 
@@ -29,7 +30,7 @@ class CategoryListBloc extends Bloc<CategoriesEvent, CategoryListState> {
 
       emit(CategoryListSuccess(categories));
     } catch (e) {
-      emit(CategoryListError("Server error: ${e.toString()}"));
+      emit(CategoryListError("${t.errors.serverError} ${e.toString()}"));
     }
   }
 }

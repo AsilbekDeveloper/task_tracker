@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class IconDialogWidget extends StatelessWidget {
   final Function(IconData icon) onIconSelected;
@@ -57,7 +58,7 @@ class IconDialogWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Choose an Icon",
+              t.category.chooseIcon,
               style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
@@ -93,7 +94,7 @@ class IconDialogWidget extends StatelessWidget {
                       child: Icon(
                         icon,
                         size: 28.sp,
-                        color: colorScheme.primary,
+                        color: colorScheme.onSurface,
                       ),
                     ),
                   );

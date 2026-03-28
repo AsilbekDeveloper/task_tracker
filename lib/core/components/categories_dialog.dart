@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_tracker_app/core/app_text_styles.dart';
+import 'package:task_tracker_app/core/colors/app_colors.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_bloc.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_state.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class CategoryPickerDialog extends StatelessWidget {
   const CategoryPickerDialog({super.key});
@@ -12,6 +14,7 @@ class CategoryPickerDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final t = Translations.of(context);
 
     return Dialog(
       backgroundColor: colorScheme.surface,
@@ -29,7 +32,7 @@ class CategoryPickerDialog extends StatelessWidget {
               } else if (state is CategoryListError) {
                 return Center(
                   child: Text(
-                    "Error: ${state.errorMessage}",
+                    "${t.errors.serverError} ${state.errorMessage}",
                     style: AppTextStyles.bodyLarge,
                   ),
                 );
@@ -49,7 +52,7 @@ class CategoryPickerDialog extends StatelessWidget {
                 if (uniqueCategories.isEmpty) {
                   return Center(
                     child: Text(
-                      'No categories available.',
+                      t.category.noCategoriesAvailable,
                       style: AppTextStyles.bodyMedium,
                     ),
                   );
@@ -79,13 +82,13 @@ class CategoryPickerDialog extends StatelessWidget {
                           children: [
                             Icon(
                               IconData(category.iconCode, fontFamily: 'MaterialIcons'),
-                              color: colorScheme.onSurface,
+                              color: AppColors.lightSurface,
                               size: 30.w,
                             ),
                             SizedBox(height: 8.h),
                             Text(
                               category.categoryName,
-                              style: AppTextStyles.bodyLarge,
+                              style: AppTextStyles.bodyLarge.copyWith(color: AppColors.darkOnSurface),
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -97,7 +100,7 @@ class CategoryPickerDialog extends StatelessWidget {
               } else {
                 return Center(
                   child: Text(
-                    'No categories available.',
+                    t.category.categoryLoadFailed,
                     style: AppTextStyles.bodyMedium,
                   ),
                 );

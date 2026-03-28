@@ -3,6 +3,7 @@ import 'package:task_tracker_app/features/home/domain/use_cases/delete_task_use_
 import 'package:task_tracker_app/features/home/presentation/bloc/delete_task/delete_task_event.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/delete_task/delete_task_state.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/task_event.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class DeleteTaskBloc extends Bloc<TaskEvent, DeleteTaskState> {
   final DeleteTaskUseCase deleteTaskUseCase;
@@ -14,7 +15,7 @@ class DeleteTaskBloc extends Bloc<TaskEvent, DeleteTaskState> {
         await deleteTaskUseCase(taskId: event.taskId);
         emit(DeleteTaskSuccess(event.taskId));
       } catch (e) {
-        emit(DeleteTaskError("Server error: ${e.toString()}"));
+        emit(DeleteTaskError("${t.errors.serverError} ${e.toString()}"));
       }
     });
   }

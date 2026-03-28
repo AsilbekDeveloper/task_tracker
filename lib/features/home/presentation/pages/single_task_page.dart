@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/components/main_button.dart';
 import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/features/categories/domain/entities/category_entity.dart';
@@ -23,6 +24,7 @@ class SingleTaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
     final theme = Theme.of(context);
 
     return BlocListener<DeleteTaskBloc, DeleteTaskState>(
@@ -31,38 +33,51 @@ class SingleTaskPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(t.task.taskEditedSuccessfully)),
           );
-          context.read<GetAllTasksBloc>().add(GetAllTasksEvent(userId: task.userId));
+          context.read<GetAllTasksBloc>().add(
+            GetAllTasksEvent(userId: task.userId),
+          );
           context.pop();
         } else if (state is DeleteTaskError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.errorMessage)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
         }
       },
       child: Scaffold(
-        backgroundColor: theme.colorScheme.surface,
+        backgroundColor: colorScheme.surface,
         appBar: AppBar(
-          iconTheme: IconThemeData(color: theme.colorScheme.onSurface),
-          backgroundColor: theme.colorScheme.surface,
+          iconTheme: IconThemeData(color: colorScheme.onSurface),
+          backgroundColor: colorScheme.surface,
           actions: [
             BlocBuilder<DeleteTaskBloc, DeleteTaskState>(
               builder: (context, state) {
                 return IconButton(
-                  onPressed: state is DeleteTaskLoading
-                      ? null
-                      : () {
-                    context.read<DeleteTaskBloc>().add(DeleteTaskEvent(taskId: task.taskId));
-                  },
-                  icon: state is DeleteTaskLoading
-                      ? CircularProgressIndicator(color: theme.colorScheme.primary)
-                      : Icon(IconsaxPlusLinear.trash, color: theme.colorScheme.onSurface),
+                  onPressed:
+                      state is DeleteTaskLoading
+                          ? null
+                          : () {
+                            context.read<DeleteTaskBloc>().add(
+                              DeleteTaskEvent(taskId: task.taskId),
+                            );
+                          },
+                  icon:
+                      state is DeleteTaskLoading
+                          ? CircularProgressIndicator(
+                            color: colorScheme.primary,
+                          )
+                          : Icon(
+                            IconsaxPlusLinear.trash,
+                            color: colorScheme.onSurface,
+                          ),
                 );
               },
             ),
           ],
           title: Text(
             task.title,
-            style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.onSurface),
+            style: AppTextStyles.headlineMedium.copyWith(
+              color: colorScheme.onSurface,
+            ),
           ),
         ),
         body: Padding(
@@ -74,34 +89,66 @@ class SingleTaskPage extends StatelessWidget {
                 SizedBox(height: 15.h),
 
                 // Task Title
-                Text(t.task.taskTitle, style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.onSurface)),
+                Text(
+                  t.task.taskTitle,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
                 SizedBox(height: 10.h),
-                Text(task.title, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface)),
+                Text(
+                  task.title,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
                 SizedBox(height: 8.h),
                 Divider(color: theme.colorScheme.onSurface.withOpacity(0.2)),
                 SizedBox(height: 20.h),
 
                 // Task Description
-                Text(t.task.taskDesc, style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.onSurface)),
+                Text(
+                  t.task.taskDesc,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
                 SizedBox(height: 10.h),
-                Text(task.description, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface)),
+                Text(
+                  task.description,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
                 SizedBox(height: 8.h),
                 Divider(color: theme.colorScheme.onSurface.withOpacity(0.2)),
                 SizedBox(height: 20.h),
 
                 // Task Time
-                Text(t.task.taskTime, style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.onSurface)),
+                Text(
+                  t.task.taskTime,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
                 SizedBox(height: 10.h),
                 Text(
                   "${task.dateTime.day.toString().padLeft(2, '0')}.${task.dateTime.month.toString().padLeft(2, '0')}.${task.dateTime.year} at ${task.dateTime.hour.toString().padLeft(2, '0')}:${task.dateTime.minute.toString().padLeft(2, '0')}",
-                  style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
                 ),
                 SizedBox(height: 8.h),
                 Divider(color: theme.colorScheme.onSurface.withOpacity(0.2)),
                 SizedBox(height: 20.h),
 
                 // Task Category
-                Text(t.task.taskCategory, style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.onSurface)),
+                Text(
+                  t.task.taskCategory,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
                 SizedBox(height: 10.h),
                 Row(
                   children: [
@@ -110,7 +157,12 @@ class SingleTaskPage extends StatelessWidget {
                       color: theme.colorScheme.onSurface,
                     ),
                     SizedBox(width: 10.w),
-                    Text(category.categoryName, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface)),
+                    Text(
+                      category.categoryName,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(height: 8.h),
@@ -118,9 +170,19 @@ class SingleTaskPage extends StatelessWidget {
                 SizedBox(height: 20.h),
 
                 // Task Priority
-                Text(t.task.taskPriority, style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.onSurface)),
+                Text(
+                  t.task.taskPriority,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
                 SizedBox(height: 10.h),
-                Text(task.priority.toString(), style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface)),
+                Text(
+                  task.priority.toString(),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
                 SizedBox(height: 180.h),
 
                 // Edit Button

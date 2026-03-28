@@ -5,6 +5,7 @@ import 'package:task_tracker_app/features/categories/data/models/category_list_m
 import 'package:task_tracker_app/features/categories/data/models/category_model.dart';
 import 'package:task_tracker_app/features/categories/domain/entities/category_entity.dart';
 import 'package:task_tracker_app/features/categories/domain/entities/category_list_entity.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 abstract class CategoriesRemoteDataSource {
   Future<CategoryListEntity> getCategoryList({required String userId});
@@ -38,7 +39,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
   Future<CategoryListModel> getCategoryList({required String userId}) async {
     try {
       if (userId.isEmpty) {
-        throw Exception("UserId cannot be empty");
+        throw Exception(t.errors.userIdEmpty);
       }
 
       logger.i("Fetching categories for userId: $userId");
@@ -61,7 +62,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
       return CategoryListModel(categoryList: categories);
     } catch (e) {
       logger.e("Error fetching categories: $e");
-      throw Exception('Kategoriya roʻyxatini olishda xatolik: $e');
+      throw Exception('${t.errors.fetchCategoriesError} $e');
     }
   }
 
@@ -91,7 +92,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
       );
     } catch (e) {
       logger.e("Error creating category: $e");
-      throw Exception("Kategoriya yaratishda xatolik: $e");
+      throw Exception("${t.errors.createCategoryError} $e");
     }
   }
 
@@ -146,7 +147,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
         'hasDefaultCategories': true,
       });
     } catch (e) {
-      throw Exception('Default category yaratishda xato: $e');
+      throw Exception('${t.errors.createDefaultCategoryError} $e');
     }
   }
 
@@ -158,7 +159,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
           .doc(categoryId)
           .delete();
     } catch (e) {
-      throw Exception("Kategoriya o'chirishda xato yuz berdi: ${e.toString()}");
+      throw Exception("${t.errors.deleteCategoryError} ${e.toString()}");
     }
   }
 
@@ -188,7 +189,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
       );
     } catch (e) {
       logger.e("Error updating category: $e");
-      throw Exception("Error updating data: $e");
+      throw Exception("${t.errors.updateDataError}}$e");
     }
   }
 

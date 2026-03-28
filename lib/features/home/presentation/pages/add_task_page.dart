@@ -69,7 +69,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (!_isFormValid) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text("Please fill required fields"),
+          content: Text(t.task.fillRequiredFields),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
@@ -123,30 +123,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
         appBar: AppBar(
           title: Text(
             t.task.addTask,
-            style: AppTextStyles.bodyLarge,
+            style: AppTextStyles.headlineMedium,
           ),
           leading: IconButton(
             icon: const Icon(IconsaxPlusLinear.close_circle),
             onPressed: () => context.pop(),
-          ),
-        ),
-
-        // MUHIM: Button pastda doim ko‘rinadi
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w,
-              MediaQuery.of(context).viewInsets.bottom + 20.h),
-          child: BlocBuilder<CreateTaskBloc, CreateTaskState>(
-            builder: (context, state) {
-              final isLoading = state is CreateTaskLoading;
-
-              return MainButton(
-                text: isLoading
-                    ? t.task.creating
-                    : t.task.createTask,
-                onPressed:
-                (isLoading) ? null : _createTask,
-              );
-            },
           ),
         ),
 
@@ -221,15 +202,28 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     _priority == null
                         ? t.category.select
                         : "${t.task.priority}: $_priority",
-                    style: AppTextStyles.headlineMedium.copyWith(
+                    style: AppTextStyles.labelSmall.copyWith(
                       color: cs.onSurface
                     ),
                   ),
                 ),
                 labelStyle: labelStyle,
               ),
+              SizedBox(height: 220.h),
 
-              SizedBox(height: 120.h),
+              /// Create Task Button
+              BlocBuilder<CreateTaskBloc, CreateTaskState>(
+                builder: (context, state) {
+                  final isLoading = state is CreateTaskLoading;
+                  return MainButton(
+                    text: isLoading
+                        ? t.task.creating
+                        : t.task.createTask,
+                    onPressed:
+                    (isLoading) ? null : _createTask,
+                  );
+                },
+              ),
             ],
           ),
         ),

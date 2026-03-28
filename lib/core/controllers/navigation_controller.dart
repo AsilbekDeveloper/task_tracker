@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:task_tracker_app/core/router/route_names.dart';
@@ -6,6 +7,7 @@ import 'package:task_tracker_app/features/categories/presentation/pages/categori
 import 'package:task_tracker_app/features/home/presentation/pages/calendar_page.dart';
 import 'package:task_tracker_app/features/home/presentation/pages/home_page.dart';
 import 'package:task_tracker_app/features/settings/presentation/pages/settings_page.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class NavigationController extends StatefulWidget {
   const NavigationController({super.key});
@@ -46,7 +48,7 @@ class _NavigationControllerState extends State<NavigationController> {
         color: theme.colorScheme.surface,
         clipBehavior: Clip.antiAlias,
         child: SizedBox(
-          height: 60,
+          height: 60.h,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -54,31 +56,31 @@ class _NavigationControllerState extends State<NavigationController> {
                 index: 0,
                 iconSelected: IconsaxPlusBold.home_2,
                 iconUnselected: IconsaxPlusLinear.home_2,
-                label: "Home",
+                label: t.navigation.home,
                 theme: theme,
               ),
               _buildNavItem(
                 index: 1,
                 iconSelected: IconsaxPlusBold.calendar,
                 iconUnselected: IconsaxPlusLinear.calendar,
-                label: "Calendar",
+                label: t.navigation.calendar,
                 theme: theme,
               ),
 
-              if (_hasFab) const SizedBox(width: 40),
+              if (_hasFab) SizedBox(width: 40.w), // Space for FAB
 
               _buildNavItem(
                 index: 2,
                 iconSelected: IconsaxPlusBold.category,
                 iconUnselected: IconsaxPlusLinear.category,
-                label: "Category",
+                label: t.navigation.category,
                 theme: theme,
               ),
               _buildNavItem(
                 index: 3,
                 iconSelected: IconsaxPlusBold.setting_2,
                 iconUnselected: IconsaxPlusLinear.setting_2,
-                label: "Settings",
+                label: t.navigation.settings,
                 theme: theme,
               ),
             ],
@@ -131,8 +133,8 @@ class _NavigationControllerState extends State<NavigationController> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(isSelected ? iconSelected : iconUnselected, color: iconColor),
-          const SizedBox(height: 4),
-          Text(label, style: TextStyle(color: textColor, fontSize: 12)),
+          SizedBox(height: 4.h),
+          Text(label, style: TextStyle(color: textColor, fontSize: 12.sp)),
         ],
       ),
     );

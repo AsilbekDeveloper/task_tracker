@@ -29,7 +29,6 @@ class _TaskTimeWidgetState extends State<TaskTimeWidget> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    // ================== Date Picker ==================
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: _selectedDateTime,
@@ -56,7 +55,7 @@ class _TaskTimeWidgetState extends State<TaskTimeWidget> {
 
     if (pickedDate == null) return;
 
-    // ================== Time Picker ==================
+    // Time Picker
     final pickedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.fromDateTime(_selectedDateTime),
@@ -112,7 +111,7 @@ class _TaskTimeWidgetState extends State<TaskTimeWidget> {
       onPressed: _pickDateTime,
       child: Text(
         _formattedDateTime,
-        style: AppTextStyles.bodyLarge.copyWith(color: colorScheme.onSurface),
+        style: AppTextStyles.labelSmall.copyWith(color: colorScheme.onSurface),
       ),
     );
   }

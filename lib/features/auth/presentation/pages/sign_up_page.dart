@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_tracker_app/core/app_images_icons/app_images.dart';
+import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/components/main_button.dart';
 import 'package:task_tracker_app/core/components/social_button_widget.dart';
 import 'package:task_tracker_app/core/components/text_field_widget.dart';
@@ -62,7 +63,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     if (password != confirm) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Passwords do not match")),
+        SnackBar(content: Text(t.auth.passwordsDoNotMatch)),
       );
       return;
     }
@@ -179,7 +180,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   final isLoading = state is SignUpLoading;
 
                   return MainButton(
-                    text: isLoading ? "Loading..." : t.auth.register,
+                    text: isLoading ? t.task.loading : t.auth.register,
                     onPressed:
                     (_isButtonEnabled && !isLoading) ? _submit : null,
                   );
@@ -192,19 +193,19 @@ class _SignUpPageState extends State<SignUpPage> {
               Row(
                 children: [
                   Expanded(
-                    child: Divider(color: colorScheme.outline),
+                    child: Divider(color: colorScheme.onSurfaceVariant),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8.w),
                     child: Text(
                       t.auth.or,
-                      style: textTheme.displayLarge?.copyWith(
+                      style: AppTextStyles.bodyMedium.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ),
                   Expanded(
-                    child: Divider(color: colorScheme.outline),
+                    child: Divider(color: colorScheme.onSurfaceVariant),
                   ),
                 ],
               ),
@@ -229,7 +230,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: [
                     Text(
                       t.auth.alreadyHaveAccount,
-                      style: textTheme.labelSmall?.copyWith(
+                      style: textTheme.bodyMedium?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
                     ),
@@ -238,7 +239,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: Text(
                         t.auth.login,
                         style: textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.primary,
+                          color: colorScheme.onSurface,
                         ),
                       ),
                     ),

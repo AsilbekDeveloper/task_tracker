@@ -3,6 +3,7 @@ import 'package:task_tracker_app/features/home/domain/use_cases/edit_task_use_ca
 import 'package:task_tracker_app/features/home/presentation/bloc/edit_task/edit_task_event.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/edit_task/edit_task_state.dart';
 import 'package:task_tracker_app/features/home/presentation/bloc/task_event.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class EditTaskBloc extends Bloc<TaskEvent, EditTaskState> {
   final EditTaskUseCase editTaskUseCase;
@@ -22,9 +23,9 @@ class EditTaskBloc extends Bloc<TaskEvent, EditTaskState> {
       emit(EditTaskSuccess(editedTask));
     } catch (e) {
       if (e.toString().contains("VALIDATION_ERROR")) {
-        emit(EditTaskValidationError("Iltimos, barcha maydonlarni to‘ldiring."));
+        emit(EditTaskValidationError(t.task.fillRequiredFields));
       } else {
-        emit(EditTaskError("Server error: ${e.toString()}"));
+        emit(EditTaskError("${t.errors.serverError} ${e.toString()}"));
       }
     }
   }

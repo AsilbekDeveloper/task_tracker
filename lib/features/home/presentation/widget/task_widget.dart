@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:task_tracker_app/core/app_text_styles.dart';
-import 'package:task_tracker_app/core/colors/app_colors.dart';
 
 class TaskWidget extends StatelessWidget {
   final VoidCallback onPressed;

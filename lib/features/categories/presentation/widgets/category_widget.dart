@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class CategoryCard extends StatelessWidget {
   final String categoryName;
@@ -36,7 +37,7 @@ class CategoryCard extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 Text(
-                  categoryName.isEmpty ? 'No name' : categoryName,
+                  categoryName.isEmpty ? t.home.noName : categoryName,
                   style: TextStyle(
                     fontSize: 16.w,
                     fontWeight: FontWeight.bold,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconly/iconly.dart';
+import 'package:task_tracker_app/core/app_text_styles.dart';
 import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/generated/strings.g.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_bloc.dart';
@@ -27,19 +28,18 @@ class _CategoriesPageState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     final t = Translations.of(context);
-    final theme = Theme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         titleSpacing: 24.w,
         automaticallyImplyLeading: false,
         title: Text(
           t.category.categoriesPage,
-          style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.onSurface),
+          style: AppTextStyles.headlineMedium.copyWith(color: colorScheme.onSurface),
         ),
-        backgroundColor: theme.colorScheme.surface,
-        iconTheme: IconThemeData(color: theme.colorScheme.onSurface),
+        backgroundColor: colorScheme.surface,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -51,14 +51,14 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 builder: (context, state) {
                   if (state is CategoryListLoading) {
                     return Center(
-                      child: CircularProgressIndicator(color: theme.colorScheme.primary),
+                      child: CircularProgressIndicator(color: colorScheme.primary),
                     );
                   } else if (state is CategoryListError) {
                     return Center(
                       child: Text(
                         "${t.category.errorLoadingCategories}: ${state.errorMessage}",
                         textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface),
+                        style: AppTextStyles.bodyLarge.copyWith(color: colorScheme.onSurface),
                       ),
                     );
                   } else if (state is CategoryListSuccess) {
@@ -68,7 +68,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       return Center(
                         child: Text(
                           t.category.noCategoriesAvailable,
-                          style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface),
+                          style: AppTextStyles.bodyLarge.copyWith(color: colorScheme.onSurface),
                         ),
                       );
                     }
@@ -105,7 +105,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     return Center(
                       child: Text(
                         t.category.noCategoriesAvailable,
-                        style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurface),
+                        style: AppTextStyles.bodyLarge.copyWith(color: colorScheme.onSurface),
                       ),
                     );
                   }
@@ -117,7 +117,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: null,
-        backgroundColor: theme.colorScheme.primary,
+        backgroundColor: colorScheme.primary,
         onPressed: () async {
           final result = await context.pushNamed(RouteNames.createCategory);
 
@@ -125,7 +125,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             context.read<CategoryListBloc>().add(LoadCategories());
           }
         },
-        child: Icon(IconlyBold.plus, color: theme.colorScheme.onPrimary),
+        child: Icon(IconlyBold.plus, color: colorScheme.onPrimary),
       ),
     );
   }

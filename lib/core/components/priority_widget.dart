@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_tracker_app/core/components/priority_number.dart';
+import 'package:task_tracker_app/generated/strings.g.dart';
 
 class PriorityWidget extends StatefulWidget {
   const PriorityWidget({super.key});
@@ -17,6 +18,7 @@ class _PriorityWidgetState extends State<PriorityWidget> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final t = Translations.of(context);
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
@@ -24,14 +26,14 @@ class _PriorityWidgetState extends State<PriorityWidget> {
         width: 327.w,
         height: 360.h,
         decoration: BoxDecoration(
-          color: colorScheme.surface, // Theme-based surface
+          color: colorScheme.surface,
           borderRadius: BorderRadius.circular(8.r),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Text(
-              "Task Priority",
+              t.task.taskPriority,
               style: textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface),
             ),
             Divider(
@@ -69,7 +71,7 @@ class _PriorityWidgetState extends State<PriorityWidget> {
                 foregroundColor: colorScheme.onPrimary,
                 alignment: Alignment.center,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.r),
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
                 minimumSize: Size(double.infinity, 48.h),
               ),
@@ -77,7 +79,7 @@ class _PriorityWidgetState extends State<PriorityWidget> {
                 context.pop(selectedPriority);
               },
               child: Text(
-                "Save",
+                t.task.save,
                 style: textTheme.bodyLarge?.copyWith(color: colorScheme.onPrimary),
               ),
             ),

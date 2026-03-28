@@ -17,6 +17,7 @@ class SocialButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -37,7 +38,12 @@ class SocialButtonWidget extends StatelessWidget {
             children: [
               Image.asset(logoPath, height: 24.h),
               SizedBox(width: 10.w),
-              Text(text, style: AppTextStyles.bodyLarge),
+              Text(
+                text,
+                style: AppTextStyles.bodyLarge.copyWith(
+                  color: colorScheme.onSurface,
+                ),
+              ),
             ],
           ),
         ),
