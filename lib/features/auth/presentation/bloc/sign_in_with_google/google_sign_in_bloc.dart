@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:task_tracker_app/features/auth/domain/use_cases/google_sign_in_use_case.dart';
 import 'package:task_tracker_app/features/categories/domain/use_cases/add_default_categories_use_case.dart';
@@ -29,10 +30,15 @@ class GoogleSignInBloc extends Bloc<GoogleSignInEvent, GoogleSignInState> {
         return;
       }
 
-      await addDefaultCategoriesUseCase(user.uid);
-
       final box = await Hive.openBox('userBox');
       await box.put('uid', user.uid);
+
+      // Add default categories in background — don't block sign-in on failure
+      try {
+        await addDefaultCategoriesUseCase(user.uid);
+      } catch (_) {
+        // Non-critical: default categories can be added later
+      }
 
       emit(GoogleSignInSuccess());
     } catch (e) {
