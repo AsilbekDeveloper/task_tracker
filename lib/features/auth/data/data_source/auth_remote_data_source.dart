@@ -83,7 +83,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
       return userCredential.user;
     } on FirebaseAuthException {
-      rethrow; // Firebase xatolarni class bilan tutadi
+      rethrow;
     } catch (e) {
       throw FirebaseAuthException(
         code: "google-sign-in-failed",

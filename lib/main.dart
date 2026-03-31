@@ -7,6 +7,7 @@ import 'package:task_tracker_app/app.dart';
 import 'package:task_tracker_app/core/di/service_locator.dart';
 import 'package:task_tracker_app/core/theme/theme_bloc.dart';
 import 'package:task_tracker_app/core/theme/theme_event.dart';
+import 'package:task_tracker_app/core/utils/language_service.dart';
 import 'package:task_tracker_app/firebase_options.dart';
 
 import 'package:task_tracker_app/features/auth/presentation/bloc/sign_in/sign_in_bloc.dart';
@@ -35,6 +36,7 @@ void main() async {
   await Hive.initFlutter();
   await setup();
   LocaleSettings.useDeviceLocale();
+  LanguageService.init();
 
   runApp(
     TranslationProvider(

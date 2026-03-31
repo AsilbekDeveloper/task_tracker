@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_tracker_app/core/theme/theme_bloc.dart';
 import 'package:task_tracker_app/features/auth/data/data_source/auth_remote_data_source.dart';
 import 'package:task_tracker_app/features/auth/data/repositories/auth_repository_impl.dart';
@@ -42,6 +43,9 @@ import 'package:task_tracker_app/features/home/presentation/bloc/update_task/upd
 final sl = GetIt.instance;
 
 Future<void> setup() async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+
   // Registering Firebase services
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   sl.registerLazySingleton<FirebaseFirestore>(() => FirebaseFirestore.instance);

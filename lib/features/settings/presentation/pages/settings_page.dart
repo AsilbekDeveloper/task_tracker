@@ -8,6 +8,7 @@ import 'package:task_tracker_app/core/router/route_names.dart';
 import 'package:task_tracker_app/core/theme/theme_bloc.dart';
 import 'package:task_tracker_app/core/theme/theme_event.dart';
 import 'package:task_tracker_app/core/theme/theme_state.dart';
+import 'package:task_tracker_app/core/utils/language_service.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/sign_out/sign_out_bloc.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/sign_out/sign_out_event.dart';
 import 'package:task_tracker_app/features/auth/presentation/bloc/sign_out/sign_out_state.dart';
@@ -176,10 +177,11 @@ class SettingsPage extends StatelessWidget {
     required AppLocale locale,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
-    final isSelected = LocaleSettings.currentLocale == locale;
+    final currentLocale = TranslationProvider.of(context).locale;
+    final isSelected = currentLocale == locale;
 
     return GestureDetector(
-      onTap: () => LocaleSettings.setLocale(locale),
+      onTap: () async => await LanguageService.changeLanguage(locale),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 12.h),
         decoration: BoxDecoration(
