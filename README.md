@@ -3,19 +3,15 @@
 A cross-platform mobile application for managing daily tasks, built with Flutter using **Clean Architecture**, **BLoC state management**, and **Firebase** as the backend.
 
 ---
-
 ## 📸 Screenshots
-![photo_2_2026-03-31_10-55-29](https://github.com/user-attachments/assets/0cfed645-1fc8-465d-a1b6-ee98ac36a4c2)
-![photo_1_2026-03-31_10-55-29](https://github.com/user-attachments/assets/8a406c8c-d389-4260-bb7f-e5e758797e71)
-![photo_5_2026-03-31_10-55-29](https://github.com/user-attachments/assets/6c512673-bad2-4c34-9439-6ffb5737c375)
-![photo_4_2026-03-31_10-55-29](https://github.com/user-attachments/assets/091b2219-2aa3-4585-b429-2ff31ed68e8a)
-![photo_3_2026-03-31_10-55-29](https://github.com/user-attachments/assets/6e69169f-89f6-4d67-9ed2-d15dd7657cb2)
 
-> _Add your screenshots here_
-> `assets/screenshots/login.png` | `assets/screenshots/home.png` | `assets/screenshots/dark.png`
-
----
-
+<p float="left">
+  <img src="https://github.com/user-attachments/assets/0cfed645-1fc8-465d-a1b6-ee98ac36a4c2" width="220" />
+  <img src="https://github.com/user-attachments/assets/8a406c8c-d389-4260-bb7f-e5e758797e71" width="220" />
+  <img src="https://github.com/user-attachments/assets/6c512673-bad2-4c34-9439-6ffb5737c375" width="220" />
+  <img src="https://github.com/user-attachments/assets/091b2219-2aa3-4585-b429-2ff31ed68e8a" width="220" />
+  <img src="https://github.com/user-attachments/assets/6e69169f-89f6-4d67-9ed2-d15dd7657cb2" width="220" />
+</p>
 ## ✨ Features
 
 - 🔐 **Firebase Authentication** — Sign in / Sign up with email & password
