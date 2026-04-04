@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:task_tracker_app/core/di/service_locator.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_bloc.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/category_list/category_list_event.dart';
 import 'package:task_tracker_app/features/categories/presentation/bloc/create_category/create_category_bloc.dart';
@@ -13,17 +14,41 @@ import 'package:task_tracker_app/features/categories/presentation/widgets/icon_d
 import 'package:task_tracker_app/core/components/text_field_widget.dart';
 import 'package:task_tracker_app/generated/strings.g.dart';
 
-class CreateCategoryPage extends StatefulWidget {
+// CreateCategoryBloc faqat shu sahifada kerak — shu yerda yaratiladi,
+// sahifa yopilganda avtomatik dispose bo'ladi.
+// CategoryListBloc esa main.dart da — bu yerda BlocProvider kerak emas,
+// lekin context.read<CategoryListBloc>() ishlaydi.
+class CreateCategoryPage extends StatelessWidget {
   const CreateCategoryPage({super.key});
 
   @override
-  State<CreateCategoryPage> createState() => _CreateCategoryPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => sl<CreateCategoryBloc>(),
+      child: const _CreateCategoryBody(),
+    );
+  }
 }
 
-class _CreateCategoryPageState extends State<CreateCategoryPage> {
+// BlocProvider yuqorida — _CreateCategoryBody uning ichki context idan foydalanadi.
+class _CreateCategoryBody extends StatefulWidget {
+  const _CreateCategoryBody();
+
+  @override
+  State<_CreateCategoryBody> createState() => _CreateCategoryBodyState();
+}
+
+// Quyidagi barcha kod avvalgidek — hech narsa o'zgarmadi
+class _CreateCategoryBodyState extends State<_CreateCategoryBody> {
   final TextEditingController categoryNameController = TextEditingController();
   IconData? selectedIcon;
   Color? categoryColor;
+
+  @override
+  void dispose() {
+    categoryNameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +64,11 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
               showDialog(
                 context: context,
                 barrierDismissible: false,
-                builder:
-                    (_) => Center(
-                      child: CircularProgressIndicator(
-                        color: theme.colorScheme.primary,
-                      ),
-                    ),
+                builder: (_) => Center(
+                  child: CircularProgressIndicator(
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
               );
             } else {
               context.pop();
@@ -59,9 +83,9 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
             }
 
             if (state is CreateCategoryError) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.errorMessage)),
+              );
             }
           },
           builder: (context, state) {
@@ -105,14 +129,11 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                           onPressed: () {
                             showDialog(
                               context: context,
-                              builder:
-                                  (_) => IconDialogWidget(
-                                    onIconSelected: (icon) {
-                                      setState(() {
-                                        selectedIcon = icon;
-                                      });
-                                    },
-                                  ),
+                              builder: (_) => IconDialogWidget(
+                                onIconSelected: (icon) {
+                                  setState(() => selectedIcon = icon);
+                                },
+                              ),
                             );
                           },
                           height: 48,
@@ -157,15 +178,14 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                   SizedBox(height: 16.h),
                   ColorSelectorWidget(
                     onColorSelected: (color) {
-                      setState(() {
-                        categoryColor = color;
-                      });
+                      setState(() => categoryColor = color);
                     },
                   ),
                   const Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // Cancel button
                       GestureDetector(
                         onTap: () => context.pop(),
                         child: Container(
@@ -185,6 +205,8 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
                           ),
                         ),
                       ),
+
+                      // Create button
                       GestureDetector(
                         onTap: () {
                           final name = categoryNameController.text.trim();
@@ -193,15 +215,20 @@ class _CreateCategoryPageState extends State<CreateCategoryPage> {
 
                           if (name.isEmpty || icon == null || color == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(t.category.fillAllFields)),
+                              SnackBar(
+                                content: Text(t.category.fillAllFields),
+                              ),
                             );
                             return;
                           }
 
-                          final currentUser = FirebaseAuth.instance.currentUser;
+                          final currentUser =
+                              FirebaseAuth.instance.currentUser;
                           if (currentUser == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(t.auth.userNotLoggedIn)),
+                              SnackBar(
+                                content: Text(t.auth.userNotLoggedIn),
+                              ),
                             );
                             return;
                           }

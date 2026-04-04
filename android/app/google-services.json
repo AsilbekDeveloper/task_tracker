@@ -7,12 +7,56 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1038502543788:android:c2a8a0059fa6899f527a09",
+        "android_client_info": {
+          "package_name": "com.asilbek.tasktracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1038502543788-9l0u4dk5tojq6olij6gaas4ckvkknjr2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_YjalHit4llEoplz-YLbOXj3zHRfintU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1038502543788-9l0u4dk5tojq6olij6gaas4ckvkknjr2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1038502543788-00r0vfvir9ted3fe39a8boaf6pc6s2if.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.taskTrackerApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1038502543788:android:0ef9d1473bb61df9527a09",
         "android_client_info": {
           "package_name": "com.example.task_tracker_app"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1038502543788-7hiaqufca1akpmh6u16t7qfmi46g8jit.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.task_tracker_app",
+            "certificate_hash": "96a9a10524b2e0a88fc3134d7bbf0239fe31e668"
+          }
+        },
         {
           "client_id": "1038502543788-7m88td3uvfnbh6p7iv8qo7087rtuk5lh.apps.googleusercontent.com",
           "client_type": 1,

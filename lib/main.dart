@@ -45,14 +45,10 @@ void main() async {
           BlocProvider(
             create: (_) => sl<ThemeBloc>()..add(LoadThemeEvent()),
           ),
-
-          BlocProvider(create: (_) => sl<SignInBloc>()),
-          BlocProvider(create: (_) => sl<SignUpBloc>()),
           BlocProvider(create: (_) => sl<SignOutBloc>()),
           BlocProvider(create: (_) => sl<GoogleSignInBloc>()),
 
           BlocProvider(create: (_) => sl<CategoryListBloc>()),
-          BlocProvider(create: (_) => sl<CreateCategoryBloc>()),
           BlocProvider(create: (_) => sl<DeleteCategoryBloc>()),
 
           BlocProvider(create: (_) => sl<GetAllTasksBloc>()),
