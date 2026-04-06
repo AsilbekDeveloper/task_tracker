@@ -69,6 +69,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1038502543788',
     projectId: 'tasktracker-4743d',
     storageBucket: 'tasktracker-4743d.firebasestorage.app',
+    androidClientId: '1038502543788-7hiaqufca1akpmh6u16t7qfmi46g8jit.apps.googleusercontent.com',
+    iosClientId: '1038502543788-00r0vfvir9ted3fe39a8boaf6pc6s2if.apps.googleusercontent.com',
     iosBundleId: 'com.example.taskTrackerApp',
   );
+
 }
